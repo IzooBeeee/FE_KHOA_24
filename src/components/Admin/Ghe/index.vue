@@ -223,7 +223,18 @@ export default {
                     }
                 })
                 .then((res) => {
-                    this.list_phong_chieu = res.data.data;
+                    if(res.data.status) {   
+                        this.list_phong_chieu = res.data.data;
+                        this.$toast.success(res.data.message);
+                    } else {
+                        this.$toast.error(res.data.message);
+                    }
+                })
+                .catch((res) => {
+                    const list = Object.values(res.response.data.errors);
+                    list.forEach((v, i) => {
+                        this.$toast.error(v[0]);
+                    });
                 });
         },
         loadDataGhe() {
@@ -234,7 +245,18 @@ export default {
                     }
                 })
                 .then((res) => {
-                    this.list_ghe = res.data.data;
+                    if(res.data.status) {
+                        this.list_ghe = res.data.data;
+                        this.$toast.success(res.data.message);
+                    } else {
+                        this.$toast.error(res.data.message);
+                    }
+                })
+                .catch((res) => {
+                    const list = Object.values(res.response.data.errors);
+                    list.forEach((v, i) => {
+                        this.$toast.error(v[0]);
+                    });
                 });
         },
         addGhe() {
@@ -247,12 +269,16 @@ export default {
                 .then((res) => {
                     if (res.data.status) {
                         this.loadDataGhe();
-                        $toast.success(res.data.message);
+                        this.$toast.success(res.data.message);
                     } else {
-                        $toast.error(res.data.message);
+                        this.$toast.error(res.data.message);
                     }
-                }).catch((err) => {
-                    $toast.error(err.response.data.message);
+                })
+                .catch((res) => {
+                    const list = Object.values(res.response.data.errors);
+                    list.forEach((v, i) => {
+                        this.$toast.error(v[0]);
+                    });
                 });
         },
         updateGhe() {
@@ -265,12 +291,16 @@ export default {
                 .then((res) => {
                     if (res.data.status) {
                         this.loadDataGhe();
-                        $toast.success(res.data.message);
+                        this.$toast.success(res.data.message);
                     } else {
-                        $toast.error(res.data.message);
+                        this.$toast.error(res.data.message);
                     }
-                }).catch((err) => {
-                    $toast.error(err.response.data.message);
+                })
+                .catch((res) => {
+                    const list = Object.values(res.response.data.errors);
+                    list.forEach((v, i) => {
+                        this.$toast.error(v[0]);
+                    });
                 });
         },
         deleteGhe() {
@@ -283,12 +313,16 @@ export default {
                 .then((res) => {
                     if (res.data.status) {
                         this.loadDataGhe();
-                        $toast.success(res.data.message);
+                        this.$toast.success(res.data.message);
                     } else {
-                        $toast.error(res.data.message);
+                        this.$toast.error(res.data.message);
                     }
-                }).catch((err) => {
-                    $toast.error(err.response.data.message);
+                })
+                .catch((res) => {
+                    const list = Object.values(res.response.data.errors);
+                    list.forEach((v, i) => {
+                        this.$toast.error(v[0]);
+                    });
                 });
         },
         formatMoney(number) {

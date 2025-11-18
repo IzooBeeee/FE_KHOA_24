@@ -254,7 +254,18 @@ export default {
                     }
                 })
                 .then((res) => {
-                    this.list_voucher = res.data.data;
+                    if(res.data.status) {
+                        this.list_voucher = res.data.data;
+                        this.$toast.success(res.data.message);
+                    } else {
+                        this.$toast.error(res.data.message);
+                    }
+                })
+                .catch((res) => {
+                    const list = Object.values(res.response.data.errors);
+                    list.forEach((v, i) => {
+                        this.$toast.error(v[0]);
+                    });
                 });
         },
         addVoucher() {
@@ -268,18 +279,20 @@ export default {
                     if (res.data.status == true) {
                         this.loadDataVoucher();
                         this.create_voucher = {
-                            ma_code: '',
-                            thoi_gian_bat_dau: '',
-                            thoi_gian_ket_thuc: '',
-                            so_giam_gia: '',
-                            so_tien_toi_da: '',
-                            so_tien_giam_gia: '',
-                            tinh_trang: '1',
+                            
                         };
                         this.$toast.success(res.data.message);
-                    } 
+                    } else {
+                        this.$toast.error(res.data.message);
+                    }
+
                 })
-             
+                .catch((res) => {
+                    const list = Object.values(res.response.data.errors);
+                    list.forEach((v, i) => {
+                        this.$toast.error(v[0]);
+                    });
+                });
         },
         updateVoucher() {
             axios
@@ -292,9 +305,16 @@ export default {
                     if (res.data.status) {
                         this.loadDataVoucher();
                         this.$toast.success(res.data.message);
-                    } 
+                    } else {
+                        this.$toast.error(res.data.message);
+                    }
                 })
-               
+                .catch((res) => {
+                    const list = Object.values(res.response.data.errors);
+                    list.forEach((v, i) => {
+                        this.$toast.error(v[0]);
+                    });
+                });
         },
         deleteVoucher() {
             axios
@@ -307,9 +327,16 @@ export default {
                     if (res.data.status) {
                         this.loadDataVoucher();
                         this.$toast.success(res.data.message);
+                    } else {
+                        this.$toast.error(res.data.message);
                     }
                 })
-              
+                .catch((res) => {
+                    const list = Object.values(res.response.data.errors);
+                    list.forEach((v, i) => {
+                        this.$toast.error(v[0]);
+                    });
+                });
         },
        
         formatVND(number) {

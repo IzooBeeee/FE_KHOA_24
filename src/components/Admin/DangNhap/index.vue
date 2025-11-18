@@ -78,6 +78,12 @@ export default {
                         this.$toast.error(res.data.message);
                     }
                 })
+                .catch((res) => {
+                    const list = Object.values(res.response.data.errors);
+                    list.forEach((v, i) => {
+                        this.$toast.error(v[0]);
+                    });
+                });
         }
     }
 }

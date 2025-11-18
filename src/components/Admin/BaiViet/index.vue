@@ -296,7 +296,18 @@ export default {
                     }
                 })
                 .then((res) => {
+                    if(res.data.status) {
                     this.list_bai_viet = res.data.data;
+                        this.$toast.success(res.data.message);
+                    } else {
+                        this.$toast.error(res.data.message);
+                    }
+                })
+                .catch((res) => {
+                    const list = Object.values(res.response.data.errors);
+                    list.forEach((v, i) => {
+                        this.$toast.error(v[0]);
+                    });
                 })
                 .catch((err) => {
                     this.$toast.error(err.response.data.message);
@@ -310,18 +321,18 @@ export default {
                     }
                 })
                 .then((res) => {
-                    this.loadDataBaiViet();
-                    this.$toast.success(res.data.message);
-                    this.create_bai_viet = {
-                        tieu_de: '',
-                        mo_ta_ngan: '',
-                        noi_dung: '',
-                        hinh_anh: '',
-                        tag: '',
-                        tinh_trang: '',
-                    };
-                }).catch((err) => {
-                    this.$toast.error(err.response.data.message);
+                    if(res.data.status) {
+                        this.loadDataBaiViet();
+                        this.$toast.success(res.data.message);
+                    } else {
+                        this.$toast.error(res.data.message);
+                    }
+                })
+                .catch((res) => {
+                    const list = Object.values(res.response.data.errors);
+                    list.forEach((v, i) => {
+                        this.$toast.error(v[0]);
+                    });
                 });
         },
         capNhatBaiViet() {
@@ -332,19 +343,18 @@ export default {
                     }
                 })
                 .then((res) => {
-                    this.loadDataBaiViet();
-                    this.$toast.success(res.data.message);
-                    this.edit_bai_viet = {
-                        id: '',
-                        tieu_de: '',
-                        mo_ta_ngan: '',
-                        noi_dung: '',
-                        hinh_anh: '',
-                        tag: '',
-                        tinh_trang: '',
-                    };
-                }).catch((err) => {
-                    this.$toast.error(err.response.data.message);
+                    if(res.data.status) {
+                        this.loadDataBaiViet();
+                        this.$toast.success(res.data.message);
+                    } else {
+                        this.$toast.error(res.data.message);
+                    }
+                })
+                .catch((res) => {
+                    const list = Object.values(res.response.data.errors);
+                    list.forEach((v, i) => {
+                        this.$toast.error(v[0]);
+                    });
                 });
         },
         xoaBaiViet() {
@@ -355,13 +365,18 @@ export default {
                     }
                 })
                 .then((res) => {
-                    this.loadDataBaiViet();
+                    if(res.data.status) {
+                        this.loadDataBaiViet();
                     this.$toast.success(res.data.message);
-                    this.del_bai_viet = {
-                        id: '',
-                    };
-                }).catch((err) => {
-                    this.$toast.error(err.response.data.message);
+                    } else {
+                        this.$toast.error(res.data.message);
+                    }
+                })
+                .catch((res) => {
+                    const list = Object.values(res.response.data.errors);
+                    list.forEach((v, i) => {
+                        this.$toast.error(v[0]);
+                    });
                 });
         },
     },

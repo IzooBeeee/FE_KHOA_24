@@ -229,9 +229,18 @@ export default {
                     }
                 })
                 .then((res) => {
-                    this.list_dich_vu = res.data.data;
-                }).catch((err) => {
-                    this.$toast.error(err.response.data.message);
+                    if(res.data.status) {
+                        this.list_dich_vu = res.data.data;
+                        this.$toast.success(res.data.message);
+                    } else {
+                        this.$toast.error(res.data.message);
+                    }
+                })
+                .catch((res) => {
+                    const list = Object.values(res.response.data.errors);
+                    list.forEach((v, i) => {
+                        this.$toast.error(v[0]);
+                    });
                 });
         },
         addDichVu() {
@@ -248,6 +257,12 @@ export default {
                     } else {
                         this.$toast.error(res.data.message);
                     }
+                })
+                .catch((res) => {
+                    const list = Object.values(res.response.data.errors);
+                    list.forEach((v, i) => {
+                        this.$toast.error(v[0]);
+                    });
                 });
         },
         updateDichVu() {
@@ -264,6 +279,12 @@ export default {
                     } else {
                         this.$toast.error(res.data.message);
                     }
+                })
+                .catch((res) => {
+                    const list = Object.values(res.response.data.errors);
+                    list.forEach((v, i) => {
+                        this.$toast.error(v[0]);
+                    });
                 });
         },
         deleteDichVu() {
@@ -280,6 +301,12 @@ export default {
                     } else {
                         this.$toast.error(res.data.message);
                     }
+                })
+                .catch((res) => {
+                    const list = Object.values(res.response.data.errors);
+                    list.forEach((v, i) => {
+                        this.$toast.error(v[0]);
+                    });
                 });
         },
         formatMoney(number) {

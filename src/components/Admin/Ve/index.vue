@@ -265,7 +265,18 @@ export default {
                     }
                 })
                 .then((res) => {
-                    this.list_ve = res.data.data;
+                    if(res.data.status) {
+                        this.list_ve = res.data.data;
+                        this.$toast.success(res.data.message);
+                    } else {
+                        this.$toast.error(res.data.message);
+                    }
+                })
+                  .catch((res) => {
+                    const list = Object.values(res.response.data.errors);
+                    list.forEach((v, i) => {
+                        this.$toast.error(v[0]);
+                    });
                 });
         },
         loadSuatChieu() {
@@ -276,7 +287,18 @@ export default {
                     }
                 })
                 .then((res) => {
-                    this.list_suat_chieu = res.data.data;
+                    if(res.data.status) {
+                        this.list_suat_chieu = res.data.data;
+                        this.$toast.success(res.data.message);
+                    } else {
+                        this.$toast.error(res.data.message);
+                    }
+                })
+                  .catch((res) => {
+                    const list = Object.values(res.response.data.errors);
+                    list.forEach((v, i) => {
+                        this.$toast.error(v[0]);
+                    });
                 });
         },
         addVe() {
@@ -302,9 +324,11 @@ export default {
                         this.$toast.error(res.data.message);
                     }
                 })
-                .catch((error) => {
-                    console.error(error);
-                    this.$toast.error(error.response.data.message);
+                  .catch((res) => {
+                    const list = Object.values(res.response.data.errors);
+                    list.forEach((v, i) => {
+                        this.$toast.error(v[0]);
+                    });
                 });
         },
         updateVe() {
@@ -323,9 +347,11 @@ export default {
                         this.$toast.error(res.data.message);
                     }
                 })
-                .catch((error) => {
-                    console.error(error);
-                    this.$toast.error(error.response.data.message);
+                  .catch((res) => {
+                    const list = Object.values(res.response.data.errors);
+                    list.forEach((v, i) => {
+                        this.$toast.error(v[0]);
+                    });
                 });
         },
         deleteVe() {
@@ -344,9 +370,11 @@ export default {
                         this.$toast.error(res.data.message);
                     }
                 })
-                .catch((error) => {
-                    console.error(error);
-                    this.$toast.error(error.response.data.message);
+                  .catch((res) => {
+                    const list = Object.values(res.response.data.errors);
+                    list.forEach((v, i) => {
+                        this.$toast.error(v[0]);
+                    });
                 });
         },
         formatMoney(number) {

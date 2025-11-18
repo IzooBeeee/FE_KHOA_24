@@ -230,7 +230,18 @@ export default {
                     }
                 })
                 .then((res) => {
-                    this.list_khach_hang = res.data.data;
+                    if(res.data.status) {
+                        this.list_khach_hang = res.data.data;
+                        this.$toast.success(res.data.message);
+                    } else {
+                        this.$toast.error(res.data.message);
+                    }
+                })
+                .catch((res) => {
+                    const list = Object.values(res.response.data.errors);
+                    list.forEach((v, i) => {
+                        this.$toast.error(v[0]);
+                    });
                 });
         },
         addKhachHang() {
@@ -243,17 +254,18 @@ export default {
                 .then((res) => {
                     if (res.data.status) {
                         this.loadDataKhachHang();
-                        create_khach_hang = {
-                            ho_va_ten: '',
-                            email: '',
-                            password: '',
-                            so_dien_thoai: '',
-                            ngay_sinh: '',
-                        },
+                        this.create_khach_hang = {
+                            };
                         this.$toast.success(res.data.message);
+                    } else {
+                        this.$toast.error(res.data.message);
                     }
-                }).catch((err) => {
-                    this.$toast.error(err.response.data.message);
+                })
+                .catch((res) => {
+                    const list = Object.values(res.response.data.errors);
+                    list.forEach((v, i) => {
+                        this.$toast.error(v[0]);
+                    });
                 });
         },
         updateKhachHang() {
@@ -267,7 +279,15 @@ export default {
                     if (res.data.status) {
                         this.loadDataKhachHang();
                              this.$toast.success(res.data.message);
+                    } else {
+                        this.$toast.error(res.data.message);
                     }
+                })
+                .catch((res) => {
+                    const list = Object.values(res.response.data.errors);
+                    list.forEach((v, i) => {
+                        this.$toast.error(v[0]);
+                    });
                 }).catch((err) => {
                     this.$toast.error(err.response.data.message);
                 });
@@ -283,7 +303,15 @@ export default {
                     if (res.data.status) {
                         this.loadDataKhachHang();
                              this.$toast.success(res.data.message);
+                    } else {
+                        this.$toast.error(res.data.message);
                     }
+                })
+                .catch((res) => {
+                    const list = Object.values(res.response.data.errors);
+                    list.forEach((v, i) => {
+                        this.$toast.error(v[0]);
+                    });
                 }).catch((err) => {
                     this.$toast.error(err.response.data.message);
                 });

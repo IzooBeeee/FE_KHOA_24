@@ -298,7 +298,18 @@ export default {
                     }
                 })
                 .then((res) => {
-                    this.list_suat_chieu = res.data.data;
+                    if(res.data.status) {
+                        this.list_suat_chieu = res.data.data;
+                        this.$toast.success(res.data.message);
+                    } else {
+                        this.$toast.error(res.data.message);
+                    }
+                })
+                .catch((res) => {
+                    const list = Object.values(res.response.data.errors);
+                    list.forEach((v, i) => {
+                        this.$toast.error(v[0]);
+                    });
                 });
         },
         loadDataPhim() {
@@ -309,7 +320,18 @@ export default {
                     }
                 })
                 .then((res) => {
-                    this.list_phim = res.data.data;
+                    if(res.data.status) {
+                        this.list_phim = res.data.data;
+                        this.$toast.success(res.data.message);
+                    } else {
+                        this.$toast.error(res.data.message);
+                    }
+                })
+                .catch((res) => {
+                    const list = Object.values(res.response.data.errors);
+                    list.forEach((v, i) => {
+                        this.$toast.error(v[0]);
+                    });
                 });
         },
         loadDataPhongChieu() {
@@ -320,7 +342,18 @@ export default {
                     }
                 })
                 .then((res) => {
-                    this.list_phong_chieu = res.data.data;
+                    if(res.data.status) {
+                        this.list_phong_chieu = res.data.data;
+                        this.$toast.success(res.data.message);
+                    } else {
+                        this.$toast.error(res.data.message);
+                    }
+                })
+                .catch((res) => {
+                    const list = Object.values(res.response.data.errors);
+                    list.forEach((v, i) => {
+                        this.$toast.error(v[0]);
+                    });
                 });
         },
         addSuatChieu() {
@@ -333,18 +366,19 @@ export default {
                 .then((res) => {
                     if (res.data.status) {
                         this.loadDataSuatChieu();
-                        create_suat_chieu = {
-                            id_phim: "",
-                            id_phong_chieu: "",
-                            ngay_chieu: "",
-                            thoi_gian_bat_dau: "",
-                            thoi_gian_ket_thuc: "",
-                            tinh_trang: "",
-                            ten_phim: "",
-                            ten_phong: ""
+                        this.create_suat_chieu = {
+
                         };
                              this.$toast.success(res.data.message);
+                    } else {
+                        this.$toast.error(res.data.message);
                     }
+                })
+                .catch((res) => {
+                    const list = Object.values(res.response.data.errors);
+                    list.forEach((v, i) => {
+                        this.$toast.error(v[0]);
+                    });
                 });
         },
         updateSuatChieu() {
@@ -358,7 +392,15 @@ export default {
                     if (res.data.status) {
                         this.loadDataSuatChieu();
                              this.$toast.success(res.data.message);
+                    } else {
+                        this.$toast.error(res.data.message);
                     }
+                })
+                .catch((res) => {
+                    const list = Object.values(res.response.data.errors);
+                    list.forEach((v, i) => {
+                        this.$toast.error(v[0]);
+                    });
                 });
         },
         deleteSuatChieu() {
@@ -372,7 +414,15 @@ export default {
                     if (res.data.status) {
                         this.loadDataSuatChieu();
                              this.$toast.success(res.data.message);
+                    } else {
+                        this.$toast.error(res.data.message);
                     }
+                })
+                .catch((res) => {
+                    const list = Object.values(res.response.data.errors);
+                    list.forEach((v, i) => {
+                        this.$toast.error(v[0]);
+                    });
                 });
         }
     },

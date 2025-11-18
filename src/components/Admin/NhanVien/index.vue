@@ -284,7 +284,18 @@ export default {
                     }
                 })
                 .then((res) => {
-                    this.list_nhan_vien = res.data.data;
+                    if(res.data.status) {
+                        this.list_nhan_vien = res.data.data;
+                        this.$toast.success(res.data.message);
+                    } else {
+                        this.$toast.error(res.data.message);
+                    }
+                })
+                .catch((res) => {
+                    const list = Object.values(res.response.data.errors);
+                    list.forEach((v, i) => {
+                        this.$toast.error(v[0]);
+                    });
                 });
         },
         loadDataChucVu() {
@@ -295,7 +306,18 @@ export default {
                     }
                 })
                 .then((res) => {
-                    this.list_chuc_vu = res.data.data;
+                    if(res.data.status) {
+                        this.list_chuc_vu = res.data.data;
+                        this.$toast.success(res.data.message);
+                    } else {
+                        this.$toast.error(res.data.message);
+                    }
+                })
+                .catch((res) => {
+                    const list = Object.values(res.response.data.errors);
+                    list.forEach((v, i) => {
+                        this.$toast.error(v[0]);
+                    });
                 });
         },
         addNhanVien() {
@@ -308,18 +330,18 @@ export default {
                 .then((res) => {
                     if (res.data.status) {
                         this.loadDataNhanVien();
-                        create_nhan_vien = {
-                            ho_va_ten: '',
-                            email: '',
-                            password: '',
-                            so_dien_thoai: '',
-                            dia_chi: '',
-                            ngay_sinh: '',
-                            id_chuc_vu: '',
-                            tinh_trang: 1,
+                        this.create_nhan_vien = {
                         };
                         this.$toast.success(res.data.message);
+                    } else {
+                        this.$toast.error(res.data.message);
                     }
+                })
+                .catch((res) => {
+                    const list = Object.values(res.response.data.errors);
+                    list.forEach((v, i) => {
+                        this.$toast.error(v[0]);
+                    });
                 });
         },
         updateNhanVien() {
@@ -332,8 +354,16 @@ export default {
                 .then((res) => {
                     if (res.data.status) {
                         this.loadDataNhanVien();
-                            this.$toast.success(res.data.message);
+                        this.$toast.success(res.data.message);
+                    } else {
+                        this.$toast.error(res.data.message);
                     }
+                })
+                .catch((res) => {
+                    const list = Object.values(res.response.data.errors);
+                    list.forEach((v, i) => {
+                        this.$toast.error(v[0]);
+                    });
                 });
         },
         deleteNhanVien() {
@@ -350,6 +380,12 @@ export default {
                     } else {
                         this.$toast.error(res.data.message);
                     }
+                })
+                .catch((res) => {
+                    const list = Object.values(res.response.data.errors);
+                    list.forEach((v, i) => {
+                        this.$toast.error(v[0]);
+                    });
                 });
         }
     },

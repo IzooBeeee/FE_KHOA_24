@@ -125,8 +125,6 @@
             </div>
         </div>
     </div>
-
-
     <!-- Modal Thêm Mới Chức Vụ -->
     <div class="modal fade" id="themMoiModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -162,7 +160,6 @@
             </div>
         </div>
     </div>
-
     <!-- Modal Cập Nhật Chức Vụ -->
     <div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -198,7 +195,6 @@
             </div>
         </div>
     </div>
-
     <!-- Modal Xóa Chức Vụ -->
     <div class="modal fade" id="delModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -237,7 +233,8 @@
 
 <script>
 import axios from 'axios';
-import apiUrl from '../../../utils/api'
+import apiUrl from '../../../utils/api';
+
 export default {
     data() {
         return {
@@ -267,37 +264,65 @@ export default {
         timKiem() {
             axios.post(apiUrl('admin/chuc-vu/tim-kiem'), this.tim_kiem, {
                     headers: {
-                        Authorization: "Bearer " + localStorage.getItem('key_admin')
+                        Authorization: 'Bearer ' + localStorage.getItem("key_admin")
                     }
                 })
                 .then((res) => {
                     this.list_chuc_vu = res.data.data;
                 })
+                .catch((res) => {
+                    const list = Object.values(res.response.data.errors);
+                    list.forEach((v, i) => {
+                        this.$toast.error(v[0]);
+                    });
+                });
         },
         layDataChucVu() {
             axios.get(apiUrl('admin/chuc-vu/get-data'), {
                     headers: {
-                        Authorization: "Bearer " + localStorage.getItem('key_admin')
+                        Authorization: 'Bearer ' + localStorage.getItem("key_admin")
                     }
                 })
                 .then(response => {
-                    this.list_chuc_vu = response.data.data;
+                    if(response.data.status) {
+                        this.list_chuc_vu = response.data.data;
+                        this.$toast.success(response.data.message);
+                    } else {
+                        this.$toast.error(response.data.message);
+                    }
                 })
+                .catch((res) => {
+                    const list = Object.values(res.response.data.errors);
+                    list.forEach((v, i) => {
+                        this.$toast.error(v[0]);
+                    });
+                });
         },
         layDataChucNang() {
             axios.get(apiUrl('admin/chuc-nang/get-data'), {
                     headers: {
-                        Authorization: "Bearer " + localStorage.getItem('key_admin')
+                        Authorization: 'Bearer ' + localStorage.getItem("key_admin")
                     }
                 })
                 .then(response => {
-                    this.list_chuc_nang = response.data.data;
+                    if(response.data.status) {
+                        this.list_chuc_nang = response.data.data;
+                        this.$toast.success(response.data.message);
+                    } else {
+                        this.$toast.error(response.data.message);
+                    }
                 })
+                .catch((res) => {
+                    const list = Object.values(res.response.data.errors);
+                    list.forEach((v, i) => {
+                        this.$toast.error(v[0]);
+                    });
+                });
         },
         taoChucVu() {
             axios.post(apiUrl('admin/chuc-vu/add-data'), this.create_chuc_vu, {
                     headers: {
-                        Authorization: "Bearer " + localStorage.getItem('key_admin')
+                        Authorization: 'Bearer ' + localStorage.getItem("key_admin")
                     }
                 })
                 .then((res) => {
@@ -309,11 +334,17 @@ export default {
                         this.$toast.error(res.data.message);
                     }
                 })
+                .catch((res) => {
+                    const list = Object.values(res.response.data.errors);
+                    list.forEach((v, i) => {
+                        this.$toast.error(v[0]);
+                    });
+                });
         },
         capNhatChucVu() {
             axios.post(apiUrl('admin/chuc-vu/update'), this.update_chuc_vu, {
                     headers: {
-                        Authorization: "Bearer " + localStorage.getItem('key_admin')
+                        Authorization: 'Bearer ' + localStorage.getItem("key_admin")
                     }
                 })
                 .then((res) => {
@@ -324,11 +355,17 @@ export default {
                         this.$toast.error(res.data.message);
                     }
                 })
+                .catch((res) => {
+                    const list = Object.values(res.response.data.errors);
+                    list.forEach((v, i) => {
+                        this.$toast.error(v[0]);
+                    });
+                });
         },
         xoaChucVu() {
             axios.post(apiUrl('admin/chuc-vu/delete'), this.delete_chuc_vu, {
                     headers: {
-                        Authorization: "Bearer " + localStorage.getItem('key_admin')
+                        Authorization: 'Bearer ' + localStorage.getItem("key_admin")
                     }
                 })
                 .then((res) => {
@@ -339,6 +376,12 @@ export default {
                         this.$toast.error(res.data.message);
                     }
                 })
+                .catch((res) => {
+                    const list = Object.values(res.response.data.errors);
+                    list.forEach((v, i) => {
+                        this.$toast.error(v[0]);
+                    });
+                });
         },
         doiTrangThai(payload) {
             axios.post(apiUrl('admin/chuc-vu/change-status'), payload, {
@@ -351,9 +394,15 @@ export default {
                         this.$toast.success(res.data.message);
                         this.layDataChucVu();
                     } else {
-                        $toast.error(res.data.message);
+                        this.$toast.error(res.data.message);
                     }
                 })
+                .catch((res) => {
+                    const list = Object.values(res.response.data.errors);
+                    list.forEach((v, i) => {
+                        this.$toast.error(v[0]);
+                    });
+                });
         },
         capQuyen(id_chuc_nang) {
             var payload = {
@@ -364,49 +413,63 @@ export default {
             axios
                 .post(apiUrl('admin/phan-quyen/chi-tiet-phan-quyen/add-data'), payload, {
                     headers: {
-                        Authorization: "Bearer " + localStorage.getItem('key_admin')
+                        Authorization: 'Bearer ' + localStorage.getItem("key_admin")
                     }
                 })
                 .then((res) => {
                     if (res.data.status) {
-                        $toast.success(res.data.message);
+                        this.$toast.success(res.data.message);
                         this.phanQuyen(this.chon_chuc_vu);
                     } else {
                         this.$toast.error(res.data.message)
                     }
                 })
+                .catch((res) => {
+                    const list = Object.values(res.response.data.errors);
+                    list.forEach((v, i) => {
+                        this.$toast.error(v[0]);
+                    });
+                });
         },
         phanQuyen(value) {
             this.chon_chuc_vu = value;
             axios
                 .post(apiUrl('admin/phan-quyen/chi-tiet-phan-quyen/data'), this.chon_chuc_vu, {
                     headers: {
-                        Authorization: "Bearer " + localStorage.getItem('key_admin')
+                        Authorization: 'Bearer ' + localStorage.getItem("key_admin")
                     }
                 })
                 .then((res) => {
-                    if (res.data.status) {
-                        this.list_phan_quyen = res.data.data;
-                    } else {
-                        this.$toast.success(res.data.message);
-                    }
+                    this.list_phan_quyen = res.data.data;
                 })
+                .catch((res) => {
+                    const list = Object.values(res.response.data.errors);
+                    list.forEach((v, i) => {
+                        this.$toast.error(v[0]);
+                    });
+                });
         },
         xoaQuyen(value) {
             axios
                 .post(apiUrl('admin/phan-quyen/chi-tiet-phan-quyen/delete'), value, {
                     headers: {
-                        Authorization: "Bearer " + localStorage.getItem('key_admin')
+                        Authorization: 'Bearer ' + localStorage.getItem("key_admin")
                     }
                 })
                 .then((res) => {
                     if (res.data.status){
-                        this.$toast.error(res.data.message);
+                        this.$toast.success(res.data.message);
                         this.phanQuyen(this.chon_chuc_vu);
                     } else {
-                        this.$toast.success(res.data.message);
+                        this.$toast.error(res.data.message);
                     }
                 })
+                .catch((res) => {
+                    const list = Object.values(res.response.data.errors);
+                    list.forEach((v, i) => {
+                        this.$toast.error(v[0]);
+                    });
+                });
         }
     }
 }

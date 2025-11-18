@@ -238,7 +238,18 @@ export default {
                     }
                 })
                 .then((res) => {
-                    this.list_phong_chieu = res.data.data;
+                    if(res.data.status) {
+                        this.list_phong_chieu = res.data.data;
+                        this.$toast.success(res.data.message);
+                    } else {
+                        this.$toast.error(res.data.message);
+                    }
+                })
+                .catch((res) => {
+                    const list = Object.values(res.response.data.errors);
+                    list.forEach((v, i) => {
+                        this.$toast.error(v[0]);
+                    });
                 });
         },
         addPhongChieu() {
@@ -251,15 +262,17 @@ export default {
                 .then((res) => {
                     if (res.data.status) {
                         this.loadDataPhongChieu();
-                        create_phong_chieu = {
-                            ten_phong: '',
-                            hang_ngang: '',
-                            hang_doc: '',
-                            is_active: '',
-                            tinh_trang: '',
+                        this.create_phong_chieu = {
+                           
                         };
-                             this.$toast.success(res.data.message);
+                        this.$toast.success(res.data.message);
                     }
+                })
+                .catch((res) => {
+                    const list = Object.values(res.response.data.errors);
+                    list.forEach((v, i) => {
+                        this.$toast.error(v[0]);
+                    });
                 });
         },
         updatePhongChieu() {
@@ -273,7 +286,15 @@ export default {
                     if (res.data.status) {
                         this.loadDataPhongChieu();
                              this.$toast.success(res.data.message);
+                    } else {
+                        this.$toast.error(res.data.message);
                     }
+                })
+                .catch((res) => {
+                    const list = Object.values(res.response.data.errors);
+                    list.forEach((v, i) => {
+                        this.$toast.error(v[0]);
+                    });
                 });
         },
         deletePhongChieu() {
@@ -287,7 +308,15 @@ export default {
                     if (res.data.status) {
                         this.loadDataPhongChieu();
                              this.$toast.success(res.data.message);
+                    } else {
+                        this.$toast.error(res.data.message);
                     }
+                })
+                .catch((res) => {
+                    const list = Object.values(res.response.data.errors);
+                    list.forEach((v, i) => {
+                        this.$toast.error(v[0]);
+                    });
                 });
         }
     },

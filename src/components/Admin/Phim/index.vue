@@ -466,8 +466,18 @@ export default {
                     }
                 })
                 .then((res) => {
-                    this.list_phim = res.data.data;
-              
+                    if(res.data.status) {
+                        this.list_phim = res.data.data;
+                        this.$toast.success(res.data.message);
+                    } else {
+                        this.$toast.error(res.data.message);
+                    }
+                })
+                .catch((res) => {
+                    const list = Object.values(res.response.data.errors);
+                    list.forEach((v, i) => {
+                        this.$toast.error(v[0]);
+                    });
                 });
         },
         addPhim() {
@@ -480,15 +490,19 @@ export default {
                 .then((res) => {
                     if (res.data.status) {
                         this.loadDataPhim();
-                        create_phim = {
-                            ten_phong: '',
-                            hang_ngang: '',
-                            hang_doc: '',
-                            is_active: '',
-                            tinh_trang: '',
+                        this.create_phim = {
+                            
                         };
-                             this.$toast.success(res.data.message);
+                        this.$toast.success(res.data.message);
+                    } else {
+                        this.$toast.error(res.data.message);
                     }
+                })
+                .catch((res) => {
+                    const list = Object.values(res.response.data.errors);
+                    list.forEach((v, i) => {
+                        this.$toast.error(v[0]);
+                    });
                 });
         },
         updatePhim() {
@@ -501,8 +515,16 @@ export default {
                 .then((res) => {
                     if (res.data.status) {
                         this.loadDataPhim();
-                             this.$toast.success(res.data.message);
+                        this.$toast.success(res.data.message);
+                    } else {
+                        this.$toast.error(res.data.message);
                     }
+                })
+                .catch((res) => {
+                    const list = Object.values(res.response.data.errors);
+                    list.forEach((v, i) => {
+                        this.$toast.error(v[0]);
+                    });
                 });
         },
         deletePhim() {
@@ -515,8 +537,16 @@ export default {
                 .then((res) => {
                     if (res.data.status) {
                         this.loadDataPhim();
-                             this.$toast.success(res.data.message);
+                        this.$toast.success(res.data.message);
+                    } else {
+                        this.$toast.error(res.data.message);
                     }
+                })
+                .catch((res) => {
+                    const list = Object.values(res.response.data.errors);
+                    list.forEach((v, i) => {
+                        this.$toast.error(v[0]);
+                    });
                 });
         }
     },
