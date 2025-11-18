@@ -3,24 +3,24 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-header mt-2">
-                    <h4 class="fw-bold text-primary">
-                        THỐNG KÊ KHÁCH HÀNG MỚI
-                    </h4>
+                    <h4 class="fw-bold text-primary">THỐNG KÊ KHÁCH HÀNG MỚI</h4>
                 </div>
                 <div class="card-body">
                     <div class="mb-3">
                         <div class="row g-3 align-items-center">
                             <div class="col-lg-5 col-md-6">
                                 <label for="">Từ ngày</label>
-                                <input v-model="search.begin" type="date" class="form-control mt-2 mb-2 w-100">
+                                <input v-model="search.begin" type="date" class="form-control mt-2 mb-2 w-100" />
                             </div>
                             <div class="col-lg-5 col-md-6">
                                 <label for="">Đến ngày</label>
-                                <input v-model="search.end" type="date" class="form-control mt-2 mb-2">
+                                <input v-model="search.end" type="date" class="form-control mt-2 mb-2" />
                             </div>
                             <div class="col-lg-2 col-md-12">
                                 <label for="">&nbsp;</label>
-                                <button @click="thongKe()" class="btn btn-primary w-100">Thống Kê</button>
+                                <button @click="thongKe()" class="btn btn-primary w-100">
+                                    Thống Kê
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -29,7 +29,7 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-lg-5">
+        <div class="col-lg-4">
             <div class="card">
                 <div class="card-body">
                     <div class="table-responsive">
@@ -53,9 +53,9 @@
                 </div>
             </div>
         </div>
-        <div class="col-lg-7">
+        <div class="col-lg-8">
             <div class="card">
-                <div class="card-body">
+                <div class="card-body" style="height: 500px">
                     <Bar v-if="is_view == true" id="my-chart-id" :options="chartOptions" :data="chartData" />
                 </div>
             </div>
@@ -64,14 +64,29 @@
 </template>
 
 <script>
-import { Bar } from 'vue-chartjs'
-import { Chart as ChartJS, Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale } from 'chart.js'
-import axios from 'axios';
-import apiUrl from '../../../../utils/api';
+import { Bar } from "vue-chartjs";
+import {
+    Chart as ChartJS,
+    Title,
+    Tooltip,
+    Legend,
+    BarElement,
+    CategoryScale,
+    LinearScale,
+} from "chart.js";
+import axios from "axios";
+import apiUrl from "../../../../utils/api";
 
-ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale)
+ChartJS.register(
+    Title,
+    Tooltip,
+    Legend,
+    BarElement,
+    CategoryScale,
+    LinearScale
+);
 export default {
-    name: 'BarChart',
+    name: "BarChart",
     components: { Bar },
     data() {
         return {
@@ -80,32 +95,51 @@ export default {
             is_view: false,
             chartData: {
                 labels: [],
-                datasets: []
+                datasets: [],
             },
-        }
+            chartOptions: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                    },
+                },
+                plugins: {
+                    legend: {
+                        display: true,
+                    },
+                },
+            },
+        };
     },
     methods: {
         thongKe() {
             axios
-                .post(apiUrl('admin/thong-ke/khach-hang-dang-ky'), this.search, {
+                .post(apiUrl("admin/thong-ke/khach-hang-dang-ky"), this.search, {
                     headers: {
-                        Authorization: 'Bearer ' + localStorage.getItem("key_admin")
-                    }
+                        Authorization: "Bearer " + localStorage.getItem("key_admin"),
+                    },
                 })
                 .then((res) => {
                     if (res.data.status) {
                         this.is_view = true;
                         this.list_data = res.data.data;
+                        // Tăng độ dày của bar
+                        const datasets = res.data.datasets.map((dataset) => ({
+                            ...dataset,
+                            barThickness: 50,
+                            maxBarThickness: 80,
+                        }));
                         this.chartData = {
                             labels: res.data.labels,
-                            datasets: res.data.datasets
+                            datasets: datasets,
                         };
                     } else {
                         this.$toast.error(res.data.message);
                     }
-
-                })
-        }
+                });
+        },
     },
 };
 </script>

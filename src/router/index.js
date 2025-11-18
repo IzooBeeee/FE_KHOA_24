@@ -188,7 +188,11 @@ const routes = [
         component: () => import("../components/Admin/ThongKe/TKVoucher/index.vue"),
         beforeEnter: checkAdmin,
     },
-
+    {
+        path: "/admin/profile",
+        component: () => import("../components/Admin/Profile/index.vue"),
+        beforeEnter: checkAdmin,
+    },
 ];
 
 const router = createRouter({
