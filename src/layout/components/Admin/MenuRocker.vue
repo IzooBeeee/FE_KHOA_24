@@ -189,67 +189,8 @@
 						</a>
 					</li>
 				</router-link>
-				<!-- Quản lý thống kê -->
-				<li class="nav-item dropdown">
-					<a href="javascript:;" class="nav-link dropdown-toggle dropdown-toggle-nocaret show"
-						data-bs-toggle="dropdown" aria-expanded="true">
-						<div class="parent-icon"><i class="fa-solid fa-chart-line"></i>
-						</div>
-						<div class="menu-title">Thống kê</div>
-					</a>
-					<ul class="dropdown-menu show" data-bs-popper="static">
-						<router-link to="/admin/thong-ke/khach-hang-dang-ky">
-							<li>
-								<a class="dropdown-item" href="/admin/thong-ke/khach-hang-dang-ky"><i
-										class="bx bx-right-arrow-alt"></i>Thống Kê Lượt Đăng Ký</a>
-							</li>
-						</router-link>
-						<router-link to="/admin/thong-ke/don-hang">
-							<li>
-								<a class="dropdown-item" href="/admin/thong-ke/don-hang"><i
-										class="bx bx-right-arrow-alt"></i>Thống kê đơn hàng</a>
-							</li>
-						</router-link>
-						<router-link to="/admin/thong-ke/ve">
-							<li>
-								<a class="dropdown-item" href="/admin/thong-ke/ve"><i
-										class="bx bx-right-arrow-alt"></i>Thống Kê Vé Bán</a>
-							</li>
-						</router-link>
-						<router-link to="/admin/thong-ke/suat-chieu">
-							<li>
-								<a class="dropdown-item" href="/admin/thong-ke/suat-chieu"><i
-										class="bx bx-right-arrow-alt"></i>Thống Kê Suất Chiếu</a>
-							</li>
-						</router-link>
-						<router-link to="/admin/thong-ke/phim">
-							<li>
-								<a class="dropdown-item" href="/admin/thong-ke/phim"><i
-										class="bx bx-right-arrow-alt"></i>Thống Kê Phim</a>
-							</li>
-						</router-link>
-						<router-link to="/admin/thong-ke/voucher">
-							<li>
-								<a class="dropdown-item" href="/admin/thong-ke/voucher"><i
-										class="bx bx-right-arrow-alt"></i>Thống Kê Voucher</a>
-							</li>
-						</router-link>
-						<router-link to="/admin/thong-ke/dich-vu">
-							<li>
-								<a class="dropdown-item" href="/admin/thong-ke/dich-vu"><i
-										class="bx bx-right-arrow-alt"></i>Thống Kê Dịch Vụ</a>
-							</li>
-						</router-link>
-						<router-link to="/admin/thong-ke/khach-hang-chi-tieu">
-							<li>
-								<a class="dropdown-item" href="/admin/thong-ke/khach-hang-chi-tieu"><i
-										class="bx bx-right-arrow-alt"></i>Thống kê chi tiêu</a>
-							</li>
-						</router-link>
-						
-						
-					</ul>
-				</li>
+				<!-- Thông tin cá nhân -->
+				
 			</ul>
 		</nav>
 	</div>
