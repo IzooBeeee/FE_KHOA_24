@@ -56,7 +56,7 @@
         <div class="col-lg-8">
             <div class="card">
                 <div class="card-body" style="height: 500px">
-                    <Bar v-if="is_view == true" id="my-chart-id" :options="chartOptions" :data="chartData" />
+                    <Line v-if="is_view == true" id="my-chart-id" :options="chartOptions" :data="chartData" />
                 </div>
             </div>
         </div>
@@ -64,13 +64,14 @@
 </template>
 
 <script>
-import { Bar } from "vue-chartjs";
+import { Line } from "vue-chartjs";
 import {
     Chart as ChartJS,
     Title,
     Tooltip,
     Legend,
-    BarElement,
+    LineElement,
+    PointElement,
     CategoryScale,
     LinearScale,
 } from "chart.js";
@@ -81,13 +82,14 @@ ChartJS.register(
     Title,
     Tooltip,
     Legend,
-    BarElement,
+    LineElement,
+    PointElement,
     CategoryScale,
     LinearScale
 );
 export default {
-    name: "BarChart",
-    components: { Bar },
+    name: "ThongKeKhachHangDangKyChart",
+    components: { Line },
     data() {
         return {
             search: {},
@@ -125,15 +127,15 @@ export default {
                     if (res.data.status) {
                         this.is_view = true;
                         this.list_data = res.data.data;
-                        // Tăng độ dày của bar
-                        const datasets = res.data.datasets.map((dataset) => ({
-                            ...dataset,
-                            barThickness: 50,
-                            maxBarThickness: 80,
-                        }));
                         this.chartData = {
                             labels: res.data.labels,
-                            datasets: datasets,
+                            datasets: res.data.datasets.map((dataset) => ({
+                                ...dataset,
+                                tension: 0.4,
+                                pointRadius: 5,
+                                pointHoverRadius: 7,
+                                fill: true,
+                            })),
                         };
                     } else {
                         this.$toast.error(res.data.message);

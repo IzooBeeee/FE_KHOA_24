@@ -21,8 +21,8 @@
                             <tr class="text-nowrap">
                                 <th class="align-middle text-center">1</th>
                                 <td class="align-middle">Nguyễn Văn A</td>
-                                <td class="align-middle">Inception</td>
-                                <td class="align-middle">Phim rất hay, âm nhạc tuyệt vời!</td>
+                                <td class="align-middle">Hành Tinh Đen</td>
+                                <td class="align-middle">Bộ phim rất hấp dẫn từ đầu đến cuối.</td>
                                 <td class="align-middle text-center" style="width: 180px;">
                                     <button class="btn btn-success w-100 btn-sm">Hiển Thị</button>
                                 </td>
@@ -34,25 +34,11 @@
                             </tr>
                             <tr class="text-nowrap">
                                 <th class="align-middle text-center">2</th>
-                                <td class="align-middle">Trần Thị B</td>
-                                <td class="align-middle">Interstellar</td>
-                                <td class="align-middle">Nội dung sâu sắc, đáng xem.</td>
+                                <td class="align-middle">Trần Minh Châu</td>
+                                <td class="align-middle">Đường Về Nhà</td>
+                                <td class="align-middle">Diễn viên diễn xuất tốt, câu chuyện cảm động.</td>
                                 <td class="align-middle text-center" style="width: 180px;">
                                     <button class="btn btn-warning w-100 btn-sm">Tạm Ẩn</button>
-                                </td>
-                                <td class="align-middle text-center">
-                                    <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal">
-                                        <i class="fa-solid fa-square-xmark"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr class="text-nowrap">
-                                <th class="align-middle text-center">3</th>
-                                <td class="align-middle">Lê Văn C</td>
-                                <td class="align-middle">The Dark Knight</td>
-                                <td class="align-middle">Heath Ledger diễn quá đỉnh!</td>
-                                <td class="align-middle text-center" style="width: 180px;">
-                                    <button class="btn btn-success w-100 btn-sm">Hiển Thị</button>
                                 </td>
                                 <td class="align-middle text-center">
                                     <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal">
@@ -89,7 +75,10 @@
     </div>
 </template>
 <script>
+
 export default {
+   
+        
 }
 </script>
 <style></style>

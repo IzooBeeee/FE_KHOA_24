@@ -1,15 +1,5 @@
 <template>
 	<div class="nav-container primary-menu">
-		<div class="mobile-topbar-header">
-			<div>
-				<img src="../../assets/images/logo-icon.png" class="logo-icon" alt="logo icon">
-			</div>
-			<div>
-				<h4 class="logo-text">Rukada</h4>
-			</div>
-			<div class="toggle-icon ms-auto"><i class='bx bx-arrow-to-left'></i>
-			</div>
-		</div>
 		<nav class="navbar navbar-expand-xl w-100">
 			<ul class="navbar-nav justify-content-start flex-grow-1 gap-1">
 				<!-- Dashboard -->
@@ -189,6 +179,67 @@
 						</a>
 					</li>
 				</router-link>
+				<!-- Thông kê -->
+				<li class="nav-item dropdown">
+					<a href="javascript:;" class="nav-link dropdown-toggle dropdown-toggle-nocaret show"
+						data-bs-toggle="dropdown" aria-expanded="true">
+						<div class="parent-icon"><i class="fa-solid fa-chart-line"></i>
+						</div>
+						<div class="menu-title">Thống kê</div>
+					</a>
+					<ul class="dropdown-menu show" data-bs-popper="static">
+						<router-link to="/admin/thong-ke/khach-hang-dang-ky">
+							<li>
+								<a class="dropdown-item" href="/admin/thong-ke/khach-hang-dang-ky"><i
+										class="bx bx-right-arrow-alt"></i>Thống Kê Lượt Đăng Ký</a>
+							</li>
+						</router-link>
+						<router-link to="/admin/thong-ke/don-hang">
+							<li>
+								<a class="dropdown-item" href="/admin/thong-ke/don-hang"><i
+										class="bx bx-right-arrow-alt"></i>Thống kê đơn hàng</a>
+							</li>
+						</router-link>
+						<router-link to="/admin/thong-ke/ve">
+							<li>
+								<a class="dropdown-item" href="/admin/thong-ke/ve"><i
+										class="bx bx-right-arrow-alt"></i>Thống Kê Vé Bán</a>
+							</li>
+						</router-link>
+						<router-link to="/admin/thong-ke/suat-chieu">
+							<li>
+								<a class="dropdown-item" href="/admin/thong-ke/suat-chieu"><i
+										class="bx bx-right-arrow-alt"></i>Thống Kê Suất Chiếu</a>
+							</li>
+						</router-link>
+						<router-link to="/admin/thong-ke/phim">
+							<li>
+								<a class="dropdown-item" href="/admin/thong-ke/phim"><i
+										class="bx bx-right-arrow-alt"></i>Thống Kê Phim</a>
+							</li>
+						</router-link>
+						<router-link to="/admin/thong-ke/voucher">
+							<li>
+								<a class="dropdown-item" href="/admin/thong-ke/voucher"><i
+										class="bx bx-right-arrow-alt"></i>Thống Kê Voucher</a>
+							</li>
+						</router-link>
+						<router-link to="/admin/thong-ke/dich-vu">
+							<li>
+								<a class="dropdown-item" href="/admin/thong-ke/dich-vu"><i
+										class="bx bx-right-arrow-alt"></i>Thống Kê Dịch Vụ</a>
+							</li>
+						</router-link>
+						<router-link to="/admin/thong-ke/khach-hang-chi-tieu">
+							<li>
+								<a class="dropdown-item" href="/admin/thong-ke/khach-hang-chi-tieu"><i
+										class="bx bx-right-arrow-alt"></i>Thống kê chi tiêu</a>
+							</li>
+						</router-link>
+						
+						
+					</ul>
+				</li>
 				<!-- Thông tin cá nhân -->
 				
 			</ul>

@@ -70,7 +70,6 @@
                                 </li>
                             </ul>
                         </template>
-
                         <template v-else>
                             <a class="d-flex align-items-center nav-link dropdown-toggle dropdown-toggle-nocaret"
                                 href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -87,7 +86,7 @@
                                 <router-link to="/client/dang-nhap">
                                     <li>
                                         <a class="dropdown-item"><i class="bx bx-log-in-circle"></i>
-                                            <span>Đăng Nhập</span></a>
+                                            <span> Đăng Nhập</span></a>
                                     </li>
                                 </router-link>
                             </ul>
@@ -105,6 +104,7 @@ export default {
     data() {
         return {
             ho_va_ten: null,
+            email_kh: null,
         };
     },
     computed: {
@@ -124,6 +124,28 @@ export default {
         this.ho_va_ten = localStorage.getItem("ho_va_ten");
     },
     methods: {
+        checkLogin() {
+            const token = localStorage.getItem("key_client");
+            if (!token) return;
+            axios.get(apiUrl('client/check-token'), {
+                headers: {
+                    Authorization: 'Bearer ' + token
+                }
+            })
+                .then((res) => {
+                    if (res.data.status) {
+                        this.ho_va_ten = res.data.ho_ten;
+                        this.email_kh = res.data.email;
+                    } else {
+                        this.$toast.error(res.data.message);
+                    }
+                })
+                .catch((error) => {
+                    console.log(error);
+                    this.ho_va_ten = null;
+                    localStorage.removeItem("key_client");
+                });
+        },
         dangXuat() {
             axios
                 .post(
@@ -139,7 +161,9 @@ export default {
                     if (res.data.status) {
                         localStorage.removeItem("key_client");
                         localStorage.removeItem("ho_va_ten");
+                        localStorage.removeItem("email_kh");
                         this.ho_va_ten = null;
+                        this.email_kh = null;
                         this.$router.push("/client/dang-nhap");
                         this.$toast.success(res.data.message);
                     } else {
@@ -169,6 +193,7 @@ export default {
                         localStorage.removeItem("key_client");
                         localStorage.removeItem("ho_va_ten");
                         this.ho_va_ten = null;
+                        this.email_kh = null;
                         this.$router.push("/client/dang-nhap");
                         this.$toast.success(res.data.message);
                     } else {
