@@ -121,6 +121,7 @@ export default {
         },
     },
     mounted() {
+        this.checkLogin();
         this.ho_va_ten = localStorage.getItem("ho_va_ten");
     },
     methods: {

@@ -1,243 +1,281 @@
 <template>
-	<div class="container py-4">
-		<!-- Order Header -->
-		<div class="card shadow-sm mb-4">
-			<div class="card-body">
-				<div class="d-flex justify-content-between align-items-center flex-wrap">
-					<div>
-						<h5 class="fw-bold mb-1">Chi tiết đơn hàng</h5>
-						<p class="text-muted small mb-0">Mã đơn: <strong>DH-2024-001234</strong> | Ngày đặt: <strong>15/01/2024 14:30</strong></p>
-					</div>
-					<span class="badge bg-success mt-2 mt-md-0">Đã thanh toán</span>
-				</div>
-			</div>
-			<div class="card-footer bg-light">
-				<div class="d-flex flex-wrap gap-2">
-					<button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#ticketModal">
-						<i class="fa-solid fa-ticket me-1"></i>Xem vé
-					</button>
-					<button class="btn btn-outline-danger btn-sm">
-						<i class="fa-solid fa-times me-1"></i>Hủy đơn
-					</button>
-					<button class="btn btn-outline-secondary btn-sm">
-						<i class="fa-solid fa-download me-1"></i>Tải hóa đơn
-					</button>
-				</div>
-			</div>
-		</div>
+    <div class="container py-4">
+        <div v-if="loading" class="text-center py-5">
+            <div class="spinner-border text-warning" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            <p class="text-muted mt-3">Đang tải chi tiết đơn hàng...</p>
+        </div>
 
-		<div class="row g-4">
-			<!-- Left Column -->
-			<div class="col-lg-8">
-				<!-- Movie & Showtime Information -->
-				<div class="card shadow-sm mb-4">
-					<div class="card-body">
-						<div class="row mb-3">
-							<div class="col-md-3 mb-3 mb-md-0">
-								<img src="https://i.pinimg.com/736x/8f/e6/f1/8fe6f1fe7e9f70414e1b5fb37c7a9e1d.jpg"
-									alt="Movie" class="img-fluid rounded">
-							</div>
-							<div class="col-md-9">
-								<h5 class="fw-bold mb-2">Avengers: Endgame</h5>
-								<p class="text-muted small mb-2">
-									<i class="fa-solid fa-building me-1"></i>Rạp số 1 - Phòng chiếu VIP
-								</p>
-								<p class="text-muted small mb-2">
-									<i class="fa-regular fa-calendar me-1"></i>20/01/2024
-									<i class="fa-regular fa-clock ms-3 me-1"></i>19:30 - 22:31
-								</p>
-								<p class="text-muted small mb-0">
-									<i class="fa-solid fa-tag me-1"></i>Hành động, Phiêu lưu
-									<i class="fa-solid fa-clock ms-3 me-1"></i>181 phút
-								</p>
-							</div>
-						</div>
-					</div>
-				</div>
+        <div v-else-if="error" class="text-center">
+            <div class="alert alert-danger">{{ error }}</div>
+            <button class="btn btn-outline-secondary" @click="backToBooking">
+                Quay lại đặt vé
+            </button>
+        </div>
 
-				<!-- Tickets & Services -->
-				<div class="card shadow-sm">
-					<div class="card-body">
-						<h6 class="fw-bold mb-3">Vé đã đặt</h6>
-						<div class="table-responsive mb-4">
-							<table class="table table-sm mb-0">
-								<thead class="table-light">
-									<tr>
-										<th>Mã vé</th>
-										<th>Ghế</th>
-										<th class="text-end">Giá vé</th>
-									</tr>
-								</thead>
-								<tbody>
-									<tr>
-										<td>VE-001234</td>
-										<td><span class="badge bg-primary">F8</span></td>
-										<td class="text-end">80.000 ₫</td>
-									</tr>
-									<tr>
-										<td>VE-001235</td>
-										<td><span class="badge bg-primary">F9</span></td>
-										<td class="text-end">80.000 ₫</td>
-									</tr>
-								</tbody>
-							</table>
-						</div>
+        <div v-else>
+            <div class="card shadow-sm mb-4">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center flex-wrap">
+                        <div>
+                            <h5 class="fw-bold mb-1">Chi tiết đơn hàng</h5>
+                            <p class="text-muted small mb-0">
+                                Mã đơn:
+                                <strong>{{ order.ma_don_hang }}</strong> |
+                                Ngày đặt:
+                                <strong>{{ formatDateTime(order.ngay_dat) }}</strong>
+                            </p>
+                        </div>
+                        <span :class="statusBadgeClass" class="mt-2 mt-md-0">
+                            {{ order.is_thanh_toan ? 'Đã thanh toán' : 'Chưa thanh toán' }}
+                        </span>
+                    </div>
+                </div>
+            </div>
 
-						<h6 class="fw-bold mb-3">Dịch vụ đã đặt</h6>
-						<div class="table-responsive">
-							<table class="table table-sm mb-0">
-								<thead class="table-light">
-									<tr>
-										<th>Tên dịch vụ</th>
-										<th class="text-end">Đơn giá</th>
-										<th class="text-center">SL</th>
-										<th class="text-end">Thành tiền</th>
-									</tr>
-								</thead>
-								<tbody>
-									<tr>
-										<td>Combo bắp nước lớn</td>
-										<td class="text-end">80.000 ₫</td>
-										<td class="text-center">1</td>
-										<td class="text-end">80.000 ₫</td>
-									</tr>
-									<tr>
-										<td>Snack mix</td>
-										<td class="text-end">50.000 ₫</td>
-										<td class="text-center">2</td>
-										<td class="text-end">100.000 ₫</td>
-									</tr>
-								</tbody>
-							</table>
-						</div>
-					</div>
-				</div>
-			</div>
+            <div class="row g-4">
+                <div class="col-lg-8">
+                    <div class="card shadow-sm mb-4">
+                        <div class="card-body">
+                            <div class="row mb-3">
+                                <div class="col-md-3 mb-3 mb-md-0">
+                                    <img :src="moviePoster" alt="Movie" class="img-fluid rounded">
+                                </div>
+                                <div class="col-md-9">
+                                    <h5 class="fw-bold mb-2">{{ movie?.ten_phim || '---' }}</h5>
+                                    <p class="text-muted small mb-2">
+                                        <i class="fa-solid fa-building me-1"></i>{{ movie?.ten_phong || '---' }}
+                                    </p>
+                                    <p class="text-muted small mb-2">
+                                        <i class="fa-regular fa-calendar me-1"></i>{{ movieDate }}
+                                        <i class="fa-regular fa-clock ms-3 me-1"></i>{{ movieTime }}
+                                    </p>
+                                    <p class="text-muted small mb-0">
+                                        <i class="fa-solid fa-tag me-1"></i>{{ movie?.the_loai || '---' }}
+                                        <i class="fa-solid fa-clock ms-3 me-1"></i>{{ movie?.thoi_luong || '---' }} phút
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-			<!-- Right Column -->
-			<div class="col-lg-4">
-				<!-- Payment Summary -->
-				<div class="card shadow-sm mb-4">
-					<div class="card-body">
-						<h6 class="fw-bold mb-3">Tóm tắt thanh toán</h6>
-						<div class="d-flex justify-content-between mb-2">
-							<span class="text-muted">Tổng tiền vé</span>
-							<span>160.000 ₫</span>
-						</div>
-						<div class="d-flex justify-content-between mb-2">
-							<span class="text-muted">Tổng tiền dịch vụ</span>
-							<span>180.000 ₫</span>
-						</div>
-						<div class="d-flex justify-content-between mb-2 text-success">
-							<span>Giảm giá</span>
-							<span>-20.000 ₫</span>
-						</div>
-						<hr>
-						<div class="d-flex justify-content-between">
-							<span class="fw-bold">Tổng thanh toán</span>
-							<span class="fw-bold text-success fs-5">320.000 ₫</span>
-						</div>
-					</div>
-				</div>
+                    <div class="card shadow-sm mb-4">
+                        <div class="card-body">
+                            <h6 class="fw-bold mb-3">Vé đã đặt</h6>
+                            <div v-if="tickets.length" class="table-responsive mb-4">
+                                <table class="table table-sm mb-0">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>Mã vé</th>
+                                            <th>Ghế</th>
+                                            <th class="text-end">Giá vé</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr v-for="(ticket, index) in tickets" :key="index">
+                                            <td>{{ ticket.ma_ve }}</td>
+                                            <td><span class="badge bg-primary">{{ ticket.ten_ghe }}</span></td>
+                                            <td class="text-end">{{ formatCurrency(ticket.gia_ve) }}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div v-else class="text-muted fst-italic">Chưa có vé nào.</div>
 
-				<!-- Customer Information -->
-				<div class="card shadow-sm mb-4">
-					<div class="card-body">
-						<h6 class="fw-bold mb-3">Thông tin khách hàng</h6>
-						<p class="mb-2">
-							<i class="fa-solid fa-user me-2 text-muted"></i>
-							<strong>Nguyễn Văn A</strong>
-						</p>
-						<p class="mb-2">
-							<i class="fa-regular fa-envelope me-2 text-muted"></i>
-							nguyenvana@gmail.com
-						</p>
-						<p class="mb-0">
-							<i class="fa-solid fa-phone me-2 text-muted"></i>
-							0901234567
-						</p>
-					</div>
-				</div>
+                            <h6 class="fw-bold mb-3 mt-4">Dịch vụ đã đặt</h6>
+                            <div v-if="services.length" class="table-responsive">
+                                <table class="table table-sm mb-0">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>Tên dịch vụ</th>
+                                            <th class="text-end">Đơn giá</th>
+                                            <th class="text-center">SL</th>
+                                            <th class="text-end">Thành tiền</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr v-for="(service, index) in services" :key="'dv-' + index">
+                                            <td>{{ service.ten_dich_vu }}</td>
+                                            <td class="text-end">{{ formatCurrency(service.don_gia) }}</td>
+                                            <td class="text-center">{{ service.so_luong }}</td>
+                                            <td class="text-end">{{ formatCurrency(service.thanh_tien) }}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div v-else class="text-muted fst-italic">Không có dịch vụ kèm theo.</div>
+                        </div>
+                    </div>
+                </div>
 
-				<!-- Voucher Information -->
-				<div class="card shadow-sm">
-					<div class="card-body">
-						<h6 class="fw-bold mb-3">Mã giảm giá</h6>
-						<div class="d-flex justify-content-between align-items-center">
-							<div>
-								<strong>WELCOME2024</strong>
-								<small class="text-muted d-block">Giảm 20.000 ₫</small>
-							</div>
-							<span class="badge bg-success">Đã áp dụng</span>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+                <div class="col-lg-4">
+                    <div class="card shadow-sm mb-4">
+                        <div class="card-body">
+                            <h6 class="fw-bold mb-3">Tóm tắt thanh toán</h6>
+                            <div class="d-flex justify-content-between mb-2">
+                                <span class="text-muted">Tổng tiền vé</span>
+                                <span>{{ formatCurrency(summary.tong_tien_ve) }}</span>
+                            </div>
+                            <div class="d-flex justify-content-between mb-2">
+                                <span class="text-muted">Tổng tiền dịch vụ</span>
+                                <span>{{ formatCurrency(summary.tong_tien_dich_vu) }}</span>
+                            </div>
+                            <div class="d-flex justify-content-between mb-2 text-success">
+                                <span>Giảm giá</span>
+                                <span>-{{ formatCurrency(summary.giam_gia) }}</span>
+                            </div>
+                            <hr>
+                            <div class="d-flex justify-content-between">
+                                <span class="fw-bold">Tổng thanh toán</span>
+                                <span class="fw-bold text-success fs-5">{{ formatCurrency(summary.tong_thanh_toan) }}</span>
+                            </div>
+                        </div>
+                    </div>
 
-	<!-- Tickets Modal -->
-	<div class="modal fade" id="ticketModal" tabindex="-1" aria-labelledby="ticketModalLabel" aria-hidden="true">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h5 class="modal-title fw-bold" id="ticketModalLabel">Vé của bạn</h5>
-					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-				</div>
-				<div class="modal-body">
-					<div class="card border mb-3">
-						<div class="card-body">
-							<div class="row">
-								<div class="col-8">
-									<h6 class="fw-bold mb-2">Avengers: Endgame</h6>
-									<p class="text-muted small mb-1">Rạp số 1 - Phòng chiếu VIP</p>
-									<p class="text-muted small mb-1">20/01/2024 | 19:30 - 22:31</p>
-									<p class="fw-bold mb-0 text-danger">Ghế: F8</p>
-									<small class="text-muted">Mã vé: VE-001234</small>
-								</div>
-								<div class="col-4 text-center">
-									<div class="bg-light p-2 rounded mb-2">
-										<i class="fa-solid fa-qrcode fs-3 text-muted"></i>
-									</div>
-									<small class="text-muted">Quét tại cửa</small>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="card border">
-						<div class="card-body">
-							<div class="row">
-								<div class="col-8">
-									<h6 class="fw-bold mb-2">Avengers: Endgame</h6>
-									<p class="text-muted small mb-1">Rạp số 1 - Phòng chiếu VIP</p>
-									<p class="text-muted small mb-1">20/01/2024 | 19:30 - 22:31</p>
-									<p class="fw-bold mb-0 text-danger">Ghế: F9</p>
-									<small class="text-muted">Mã vé: VE-001235</small>
-								</div>
-								<div class="col-4 text-center">
-									<div class="bg-light p-2 rounded mb-2">
-										<i class="fa-solid fa-qrcode fs-3 text-muted"></i>
-									</div>
-									<small class="text-muted">Quét tại cửa</small>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-					<button type="button" class="btn btn-primary">
-						<i class="fa-solid fa-download me-2"></i>Tải vé
-					</button>
-				</div>
-			</div>
-		</div>
-	</div>
+                    <div class="card shadow-sm mb-4">
+                        <div class="card-body">
+                            <h6 class="fw-bold mb-3">Thông tin khách hàng</h6>
+                            <p class="mb-2">
+                                <i class="fa-solid fa-user me-2 text-muted"></i>
+                                <strong>{{ customer.ho_va_ten }}</strong>
+                            </p>
+                            <p class="mb-2">
+                                <i class="fa-regular fa-envelope me-2 text-muted"></i>
+                                {{ customer.email }}
+                            </p>
+                            <p class="mb-0">
+                                <i class="fa-solid fa-phone me-2 text-muted"></i>
+                                {{ customer.so_dien_thoai }}
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <h6 class="fw-bold mb-3">Mã giảm giá</h6>
+                            <div v-if="voucher" class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <strong>{{ voucher.ma_code }}</strong>
+                                    <small class="text-muted d-block">
+                                        Giảm {{ voucher.so_giam_gia * 100 }}% - tối đa {{ formatCurrency(voucher.so_tien_toi_da) }}
+                                    </small>
+                                </div>
+                                <span class="badge bg-success">Đã áp dụng</span>
+                            </div>
+                            <div v-else class="text-muted fst-italic">Không áp dụng voucher.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </template>
 
 <script>
-export default {
+import axios from 'axios';
+import apiUrl from '../../../utils/api';
 
+export default {
+    props: ['ma_don_hang'],
+    data() {
+        return {
+            loading: true,
+            error: '',
+            order: {},
+            customer: {},
+            movie: null,
+            tickets: [],
+            services: [],
+            voucher: null,
+            summary: {
+                tong_tien_ve: 0,
+                tong_tien_dich_vu: 0,
+                giam_gia: 0,
+                tong_thanh_toan: 0
+            },
+            defaultPoster: 'https://via.placeholder.com/200x300?text=Poster'
+        }
+    },
+    computed: {
+        moviePoster() {
+            return (this.movie && this.movie.hinh_anh) ? this.movie.hinh_anh : this.defaultPoster;
+        },
+        movieDate() {
+            if (!this.movie?.ngay_chieu) return '---';
+            const d = new Date(this.movie.ngay_chieu);
+            return d.toLocaleDateString('vi-VN');
+        },
+        movieTime() {
+            if (!this.movie?.thoi_gian_bat_dau) return '---';
+            return `${this.movie.thoi_gian_bat_dau} - ${this.movie.thoi_gian_ket_thuc}`;
+        },
+        statusBadgeClass() {
+            return this.order.is_thanh_toan ? 'badge bg-success' : 'badge bg-warning text-dark';
+        }
+    },
+    watch: {
+        '$route.params.ma_don_hang': {
+            immediate: false,
+            handler(newVal) {
+                if (newVal) {
+                    this.fetchOrderDetail(newVal);
+                }
+            }
+        }
+    },
+    mounted() {
+        this.fetchOrderDetail(this.$route.params.ma_don_hang);
+    },
+    methods: {
+        fetchOrderDetail(maDonHang) {
+            this.loading = true;
+            this.error = '';
+            axios.get(apiUrl(`client/chi-tiet-don-hang/${maDonHang}`), {
+                headers: {
+                    Authorization: "Bearer " + localStorage.getItem('key_client')
+                }
+            })
+                .then((res) => {
+                    if (res.data.status) {
+                        const data = res.data.data;
+                        this.order = data.don_hang;
+                        this.customer = data.khach_hang;
+                        this.movie = data.phim;
+                        this.tickets = data.ve || [];
+                        this.services = data.dich_vu || [];
+                        this.voucher = data.voucher;
+                        this.summary = data.summary;
+                    } else {
+                        this.error = res.data.message || 'Không thể tải chi tiết đơn hàng.';
+                    }
+                })
+                .catch((error) => {
+                    if (error.response && error.response.status === 401) {
+                        this.error = 'Bạn cần đăng nhập để xem đơn hàng.';
+                    } else if (error.response && error.response.status === 404) {
+                        this.error = 'Không tìm thấy đơn hàng.';
+                    } else {
+                        this.error = 'Có lỗi xảy ra khi tải dữ liệu.';
+                    }
+                })
+                .finally(() => {
+                    this.loading = false;
+                });
+        },
+        formatCurrency(value) {
+            if (!value && value !== 0) return '0 ₫';
+            return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(value);
+        },
+        formatDateTime(date) {
+            if (!date) return '---';
+            const d = new Date(date);
+            return d.toLocaleString('vi-VN');
+        },
+        backToBooking() {
+            this.$router.back();
+        }
+    }
 }
 </script>
 

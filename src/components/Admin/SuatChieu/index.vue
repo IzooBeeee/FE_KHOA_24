@@ -47,7 +47,7 @@
                                     <td class="align-middle text-center" style="width: 200px;">
                                         <button class="btn btn-primary me-2" data-bs-toggle="modal"
                                             data-bs-target="#createModal"
-                                            v-on:click="Object.assign(create_ve_suat_chieu, item)">
+                                            v-on:click="setSuatChieuSelected(item)">
                                             Tạo Vé
                                         </button>
                                         <button class="btn btn-info text-light me-2" data-bs-toggle="modal"
@@ -228,15 +228,19 @@
                 <div class="modal-body">
                     <div class="alert alert-danger" role="alert">
                         Bạn có chắc chắn muốn tạo vé cho phim
-                        <strong>{{ create_suat_chieu.ten_phim }}</strong> vào ngày <strong>{{
-                            create_suat_chieu.ngay_chieu }}</strong>?
+                        <strong>{{ create_ve_suat_chieu.ten_phim }}</strong> vào ngày <strong>{{
+                            create_ve_suat_chieu.ngay_chieu }}</strong>?
+                        <p class="mt-2 mb-0">
+                            Số vé sẽ dựa trên toàn bộ ghế của phòng
+                            <strong>{{ create_ve_suat_chieu.ten_phong }}</strong>.
+                        </p>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
                         Đóng
                     </button>
-                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal" @click="taoVeAuto">
                         Xác nhận
                     </button>
                 </div>
@@ -287,9 +291,25 @@ export default {
                 ten_phim: "",
                 ten_phong: ""
             },
+            create_ve_suat_chieu: {
+                id: "",
+                id_phong_chieu: "",
+                ten_phim: "",
+                ten_phong: "",
+                ngay_chieu: ""
+            },
         }
     },
     methods: {
+        setSuatChieuSelected(item) {
+            this.create_ve_suat_chieu = {
+                id: item.id,
+                id_phong_chieu: item.id_phong_chieu,
+                ten_phim: item.ten_phim,
+                ten_phong: item.ten_phong,
+                ngay_chieu: item.ngay_chieu,
+            };
+        },
         loadDataSuatChieu() {
             axios
                 .get(apiUrl('admin/suat-chieu/get-data'), {
@@ -423,6 +443,32 @@ export default {
                     list.forEach((v, i) => {
                         this.$toast.error(v[0]);
                     });
+                });
+        },
+        taoVeAuto() {
+            if (!this.create_ve_suat_chieu.id) {
+                this.$toast.error('Vui lòng chọn suất chiếu!');
+                return;
+            }
+            axios.post(apiUrl('admin/suat-chieu/tao-ve-auto'), this.create_ve_suat_chieu, {
+                headers: {
+                    Authorization: "Bearer " + localStorage.getItem('key_admin')
+                }
+            })
+                .then((res) => {
+                    if (res.data.status) {
+                        this.$toast.success(res.data.message);
+                    } else {
+                        this.$toast.error(res.data.message);
+                    }
+                })
+                .catch((res) => {
+                    if (res.response?.data?.errors) {
+                        const list = Object.values(res.response.data.errors);
+                        list.forEach((v) => this.$toast.error(v[0]));
+                    } else {
+                        this.$toast.error('Không thể tạo vé tự động');
+                    }
                 });
         }
     },

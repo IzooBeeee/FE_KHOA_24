@@ -41,10 +41,10 @@
                                     <td class="align-middle text-center">{{ item.ten_ghe }}</td>
                                     <td class="align-middle text-center">{{ formatMoney(item.gia_ve) }}</td>
                                     <td class="align-middle text-center">
-                                        <button v-if="item.tinh_trang == 1" class="btn btn-success w-100">
+                                        <button v-if="item.tinh_trang == 2" class="btn btn-success w-100">
                                             Đã Thanh Toán
                                         </button>
-                                        <button v-else-if="item.tinh_trang == 0"
+                                        <button v-else-if="item.tinh_trang == 1"
                                             class="btn btn-warning text-light w-100">
                                             Chưa Thanh Toán
                                         </button>

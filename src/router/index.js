@@ -45,6 +45,26 @@ const routes = [
         props: true,
     },
     {
+        path: "/client/dat-ve/:id_suat_chieu",
+        component: () => import("../components/Client/DatVe/index.vue"),
+        meta: { layout: "client" },
+        beforeEnter: checkClient,
+    },
+    {
+        path: "/client/thanh-toan/:ma_don_hang",
+        component: () => import("../components/Client/ThanhToan/index.vue"),
+        meta: { layout: "client" },
+        beforeEnter: checkClient,
+        props: true,
+    },
+    // {
+    //     path: "/client/chi-tiet-don-hang/:ma_don_hang",
+    //     component: () => import("../components/Client/ChiTietDonHang/index.vue"),
+    //     meta: { layout: "client" },
+    //     beforeEnter: checkClient,
+    //     props: true,
+    // },
+    {
         path: "/client/bai-viet",
         component: () => import("../components/Client/BaiViet/index.vue"),
         meta: { layout: "client" },
@@ -60,12 +80,8 @@ const routes = [
         meta: { layout: "client" },
         beforeEnter: checkClient,
     },
-    {
-        path: "/client/chi-tiet-don-hang",
-        component: () => import("../components/Client/ChiTietDonHang/index.vue"),
-        meta: { layout: "client" },
-        beforeEnter: checkClient,
-    },
+   
+    
     // {
     //     path: "/",
     //     component: () => import("../components/Test/index.vue"),

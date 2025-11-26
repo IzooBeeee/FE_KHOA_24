@@ -43,7 +43,7 @@
                                     <td class="align-middle text-center" style="width: 200px;">
                                         <button class="btn btn-primary me-2" data-bs-toggle="modal"
                                             data-bs-target="#createModal"
-                                            v-on:click="Object.assign(create_ghe_phong_chieu, item)">
+                                            v-on:click="setPhongChieuSelected(item)">
                                             Tạo Ghế Auto
                                         </button>
                                         <button class="btn btn-info text-light me-2" data-bs-toggle="modal"
@@ -109,6 +109,40 @@
                     </button>
                     <button type="button" class="btn btn-primary" data-bs-dismiss="modal" @click="addPhongChieu()">
                         Thêm mới
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Tạo Ghế Auto -->
+    <div class="modal fade" id="createModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Tạo Ghế Tự Động</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">Phòng chiếu</label>
+                        <input class="form-control" type="text" :value="create_ghe_phong_chieu.ten_phong" disabled />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Hàng dọc</label>
+                        <input v-model.number="create_ghe_phong_chieu.hang_doc" type="number" min="1" class="form-control"
+                            placeholder="Nhập số hàng dọc" />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Hàng ngang</label>
+                        <input v-model.number="create_ghe_phong_chieu.hang_ngang" type="number" min="1"
+                            class="form-control" placeholder="Nhập số hàng ngang" />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal" @click="taoGheAuto">
+                        Xác nhận
                     </button>
                 </div>
             </div>
@@ -204,6 +238,12 @@ export default {
     data() {
         return {
             list_phong_chieu: [],
+            create_ghe_phong_chieu: {
+                id: '',
+                ten_phong: '',
+                hang_doc: '',
+                hang_ngang: '',
+            },
             create_phong_chieu: {
                 ten_phong: '',
                 hang_ngang: '',
@@ -230,6 +270,14 @@ export default {
         }
     },
     methods: {
+        setPhongChieuSelected(item) {
+            this.create_ghe_phong_chieu = {
+                id: item.id,
+                ten_phong: item.ten_phong,
+                hang_doc: item.hang_doc,
+                hang_ngang: item.hang_ngang,
+            };
+        },
         loadDataPhongChieu() {
             axios
                 .get(apiUrl('admin/phong-chieu/get-data'), {
@@ -317,6 +365,32 @@ export default {
                     list.forEach((v, i) => {
                         this.$toast.error(v[0]);
                     });
+                });
+        },
+        taoGheAuto() {
+            if (!this.create_ghe_phong_chieu.id) {
+                this.$toast.error('Vui lòng chọn phòng chiếu!');
+                return;
+            }
+            axios.post(apiUrl('admin/phong-chieu/tao-ghe-auto'), this.create_ghe_phong_chieu, {
+                headers: {
+                    Authorization: "Bearer " + localStorage.getItem('key_admin')
+                }
+            })
+                .then((res) => {
+                    if (res.data.status) {
+                        this.$toast.success(res.data.message);
+                    } else {
+                        this.$toast.error(res.data.message);
+                    }
+                })
+                .catch((res) => {
+                    if (res.response?.data?.errors) {
+                        const list = Object.values(res.response.data.errors);
+                        list.forEach((v) => this.$toast.error(v[0]));
+                    } else {
+                        this.$toast.error('Không thể tạo ghế tự động');
+                    }
                 });
         }
     },

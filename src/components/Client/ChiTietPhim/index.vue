@@ -95,7 +95,7 @@
         </div>
 
         <div class="row g-4 mt-5">
-            <div class="col-lg-12">
+            <div class="col-lg-8">
                 <div class="bg-white rounded shadow-sm p-4 h-100">
                     <h5 class="fs-5 fw-bold mb-4 border-bottom pb-2">Bình Luận</h5>
                     <div class="mb-4">
@@ -105,45 +105,77 @@
                                     width="45" height="45">
                             </div>
                             <div class="col">
-                                <textarea id="noidung"  class="form-control" rows="1"
+                                <textarea id="noidung" v-model="noi_dung_binh_luan" class="form-control" rows="1"
                                     placeholder="Viết bình luận của bạn..." required></textarea>
                             </div>
                             <div class="col-auto">
-                                <button class="btn btn-danger px-4 py-2 btn-sm fw-semibold">Gửi</button>
+                                <button @click="binhLuan()"
+                                    class="btn btn-danger px-4 py-2 btn-sm fw-semibold">Gửi</button>
                             </div>
                         </div>
                     </div>
                     <div class="border-top pt-4">
-                        <div class="mb-3 mt-2 bg-secondary bg-opacity-10 border border-secondary rounded-3 p-3">
-                            <div class="d-flex align-items-start gap-3">
-                                <img src="https://i.pravatar.cc/48?img=10" alt="User Avatar" class="rounded-circle"
-                                    width="45" height="45">
-                                <div class="flex-grow-1">
-                                    <div class="d-flex justify-content-between align-items-center mb-2">
-                                        <h6 class="fw-bold mb-0">Nguyễn Văn A</h6>
-                                        <small class="text-muted">12/09/2024</small>
+                        <template v-for="(value, index) in list_binh_luan" :key="index">
+                            <div class="mb-3 mt-2 bg-secondary bg-opacity-10 border border-secondary rounded-3 p-3">
+                                <div class="d-flex align-items-start gap-3">
+                                    <img :src="value.avatar" alt="User Avatar" class="rounded-circle" width="45"
+                                        height="45">
+                                    <div class="flex-grow-1">
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <h6 class="fw-bold mb-0">{{ value.ho_va_ten }}</h6>
+                                            <small class="text-muted">{{ formatDate(value.created_at) }}</small>
+                                        </div>
+                                        <p class="mb-0 text-secondary">
+                                            {{ value.noi_dung }}
+                                        </p>
                                     </div>
-                                    <p class="mb-0 text-secondary">
-                                        Bộ phim rất hay, nội dung gay cấn từ đầu đến cuối. Hiệu ứng hình ảnh cực kỳ ấn tượng!
-                                    </p>
+                                </div>
+                            </div>
+                        </template>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <div class="bg-white rounded shadow-sm p-4 h-100">
+                    <h5 class="fs-5 fw-bold mb-4 border-bottom pb-2">Đánh Giá Phim</h5>
+                    <div class="row g-4">
+                        <div class="col-12">
+                            <div class="d-flex align-items-center gap-3">
+                                <div class="text-center">
+                                    <h3 class="fw-bold text-success mb-0">4.2</h3>
+                                    <p class="text-muted small mb-0">/5 (DZCinema)</p>
+                                </div>
+                                <div class="flex-grow-1">
+                                    <div class="progress" style="height: 8px;">
+                                        <div class="progress-bar bg-success" role="progressbar" style="width: 84%;"
+                                            aria-valuenow="84" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                    <p class="text-muted small mt-1">Dựa trên 567 đánh giá</p>
                                 </div>
                             </div>
                         </div>
-
-                        <div class="mb-3 mt-2 bg-secondary bg-opacity-10 border border-secondary rounded-3 p-3">
-                            <div class="d-flex align-items-start gap-3">
-                                <img src="https://i.pravatar.cc/48?img=32" alt="User Avatar" class="rounded-circle"
-                                    width="45" height="45">
-                                <div class="flex-grow-1">
-                                    <div class="d-flex justify-content-between align-items-center mb-2">
-                                        <h6 class="fw-bold mb-0">Trần Minh Châu</h6>
-                                        <small class="text-muted">10/09/2024</small>
-                                    </div>
-                                    <p class="mb-0 text-secondary">
-                                        Diễn viên diễn xuất chắc tay, âm nhạc cuốn hút. Mình sẽ rủ bạn bè đi xem lần nữa.
-                                    </p>
-                                </div>
+                    </div>
+                    <div class="mt-4">
+                        <div class="row g-3 ">
+                            <div class="col-auto">
+                                <select class="form-select" aria-label="Rating select">
+                                    <option selected>Chọn điểm số</option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                </select>
                             </div>
+                            <div class="col-auto">
+                                <textarea class="form-control" rows="2"
+                                    placeholder="Viết đánh giá của bạn..."></textarea>
+                            </div>
+                        </div>
+                        <div class="mt-3 text-end">
+                            <button type="submit" class="btn btn-success px-4 py-2 fw-semibold">Gửi đánh
+                                giá</button>
                         </div>
                     </div>
                 </div>
@@ -213,7 +245,7 @@
                         <h5 class="fw-semibold mb-3 text-dark">Suất chiếu</h5>
                         <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-3">
                             <div class="col" v-for="(value, index) in suatChieuTheoNgay" :key="index">
-                                <button class="btn btn-outline-primary w-100 py-2">
+                                <button class="btn btn-outline-primary w-100 py-2" :class="{ 'btn-primary': selectedSuatChieuId === value.id }" @click="selectedSuatChieuId = value.id">
                                     {{ formatTime(value.thoi_gian_bat_dau) }}
                                 </button>
                             </div>
@@ -222,7 +254,10 @@
                 </div>
                 <div class="modal-footer border-top">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-                    <button type="button" class="btn btn-primary">Tiếp tục đặt vé</button>
+                    <button v-if="selectedSuatChieuId" type="button" class="btn btn-primary" @click="goToDatVe">
+                        Tiếp tục đặt vé
+                    </button>
+                    <button v-else type="button" class="btn btn-primary" disabled>Tiếp tục đặt vé</button>
                 </div>
             </div>
         </div>
@@ -239,10 +274,11 @@ export default {
             chi_tiet_phim: {},
             suat_chieu_phim: [],
             selectedDate: false,
-            list_phim_khac: [],
+            selectedSuatChieuId: null,
 
-            // noi_dung_binh_luan: "",
-            // list_binh_luan: [],
+            noi_dung_binh_luan: "",
+            list_binh_luan: [],
+            list_phim_khac: [],
         }
     },
     computed: {
@@ -250,8 +286,11 @@ export default {
             if (!this.suat_chieu_phim || this.suat_chieu_phim.length === 0) {
                 return [];
             }
+            // Lấy danh sách ngày chiếu
             const allDates = this.suat_chieu_phim.map(item => item.ngay_chieu);
+            // Lọc bỏ trùng
             const uniqueDates = Array.from(new Set(allDates));
+            // Trả về đúng định dạng
             return uniqueDates.map(date => ({ ngay_chieu: date }));
         },
         suatChieuTheoNgay() {
@@ -261,6 +300,7 @@ export default {
     },
     mounted() {
         this.loadChiTietPhim();
+        this.dataBinhLuan();
     },
     methods: {
         formatTime(time) {
@@ -274,11 +314,11 @@ export default {
             var payload = {
                 id: this.id_phim
             }
-            axios.post(apiUrl('client/chi-tiet-phim/get-data'), payload, {
-                headers: {
-                    Authorization: "Bearer " + localStorage.getItem("key_client")
-                }
-            })
+                axios.post(apiUrl('client/chi-tiet-phim/get-data'), payload, {
+                    headers: {
+                        Authorization: "Bearer " + localStorage.getItem('key_client')
+                    }
+                })
                 .then((res) => {
                     if (res.data.status) {
                         this.chi_tiet_phim = res.data.data_phim;
@@ -290,6 +330,60 @@ export default {
                     } else {
                         this.$toast.error(res.data.message);
                     }
+                });
+        },
+        goToDatVe() {
+            if (!this.selectedSuatChieuId) return;
+            const modalEl = document.getElementById('buyTicketModal');
+            try {
+                const bootstrapNs = window.bootstrap || window['bootstrap'];
+                if (bootstrapNs && bootstrapNs.Modal && modalEl) {
+                    const instance = bootstrapNs.Modal.getInstance(modalEl) || new bootstrapNs.Modal(modalEl);
+                    instance.hide();
+                }
+            } catch (e) { }
+            if (modalEl) {
+                modalEl.classList.remove('show');
+                if (modalEl.style) { modalEl.style.display = 'none'; }
+                modalEl.setAttribute('aria-hidden', 'true');
+            }
+            document.body.classList.remove('modal-open');
+            const backdrops = document.getElementsByClassName('modal-backdrop');
+            Array.from(backdrops).forEach(el => el.parentNode && el.parentNode.removeChild(el));
+            this.$router.push(`/client/dat-ve/${this.selectedSuatChieuId}`);
+        },
+        binhLuan() {
+            var payload = {
+                "id_phim": this.id_phim,
+                "noi_dung_binh_luan": this.noi_dung_binh_luan
+            }
+            axios
+                .post(apiUrl("client/chi-tiet-phim/binh-luan"), payload, {
+                    headers: {
+                        Authorization: "Bearer " + localStorage.getItem('key_client')
+                    }
+                })
+                .then((res) => {
+                    if (res.data.status) {
+                        this.$toast.success(res.data.message);
+                        this.dataBinhLuan();
+
+                    } else {
+                        this.$toast.error(res.data.message);
+                        this.$router.push('/');
+                    }
+                });
+        },
+        dataBinhLuan() {
+            axios
+                .get(apiUrl("client/chi-tiet-phim/binh-luan/get-data/" + this.id_phim), {
+                    headers: {
+                        Authorization: "Bearer " + localStorage.getItem('key_client')
+                    }
+                })
+                .then((res) => {
+                    this.list_binh_luan = res.data.data;
+                    this.noi_dung_binh_luan = ""
                 });
         }
     },

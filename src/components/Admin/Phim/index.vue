@@ -40,9 +40,9 @@
                                     <td class="align-middle text-center">{{ item.ngay_phat_hanh }}</td>
                                     <td class="align-middle text-center">{{ item.quoc_gia }}</td>
                                     <td class="align-middle text-center">
-                                        <button v-if="item.tinh_trang == 1" class="btn btn-success w-100">Đang
+                                        <button v-if="item.tinh_trang == 2" class="btn btn-success w-100">Đang
                                             Chiếu</button>
-                                        <button v-else-if="item.tinh_trang == 2" class="btn btn-danger w-100">Sắp
+                                        <button v-else-if="item.tinh_trang == 1" class="btn btn-danger w-100">Sắp
                                             Chiếu</button>
                                         <button v-else class="btn btn-warning text-light w-100">Ngừng Chiếu</button>
                                     </td>
