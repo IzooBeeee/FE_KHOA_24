@@ -33,8 +33,8 @@
                                     <td class="align-middle text-center">{{ convertDate(item.thoi_gian_bat_dau) }}</td>
                                     <td class="align-middle text-center">{{ convertDate(item.thoi_gian_ket_thuc) }}</td>
                                     <td class="text-center align-middle">{{ item.so_giam_gia }}%</td>
-                                    <td class="text-center align-middle">{{ item.so_tien_toi_da }}K</td>
-                                    <td class="text-center align-middle">{{ item.so_tien_giam_gia }}K</td>
+                                    <td class="text-center align-middle">{{ formatVDN(item.so_tien_toi_da) }}</td>
+                                    <td class="text-center align-middle">{{ formatVDN(item.so_tien_giam_gia) }}</td>
                                     <td @click="changeStatusVoucher(item)" class="text-center align-middle"
                                         style="width: 100px;">
                                         <button v-if="item.tinh_trang == 1" type="button"
@@ -246,6 +246,9 @@ export default {
         this.loadDataVoucher();
     },
     methods: {
+        formatVDN(num) {
+            return num.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+        },
         loadDataVoucher() {
             axios
                 .get(apiUrl('admin/voucher/get-data'), {

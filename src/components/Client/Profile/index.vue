@@ -177,23 +177,6 @@
 								</div>
 							</div>
 							<div class="tab-pane fade" id="history" role="tabpanel">
-								<!-- Loading State -->
-								<div v-if="loadingOrders" class="text-center py-5">
-									<div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;">
-										<span class="visually-hidden">Đang tải...</span>
-									</div>
-									<p class="mt-3 text-muted">Đang tải danh sách đơn hàng...</p>
-								</div>
-
-								<!-- Empty State -->
-								<div v-else-if="!donHangs || donHangs.length === 0" class="text-center py-5">
-									<i class="fas fa-ticket-alt fa-4x text-muted mb-3 opacity-50"></i>
-									<h5 class="text-muted mb-2">Chưa có đơn hàng nào</h5>
-									<p class="text-muted">Hãy đặt vé xem phim ngay!</p>
-								</div>
-
-								<!-- Orders Cards -->
-								<div v-else>
 									<div v-for="(order, index) in donHangs" :key="order.id" class="card mb-3 border-0 shadow-sm">
 										<div class="card-body">
 											<div class="row align-items-center g-3">
@@ -288,7 +271,6 @@
 									</div>
 								</div>
 							</div>
-						</div>
 					</div>
 				</div>
 			</div>
@@ -300,19 +282,22 @@
 		<div class="modal-dialog modal-xl">
 			<div class="modal-content" v-if="selectedOrder">
 				<div class="modal-header bg-primary text-white">
-					<h5 class="modal-title" id="chiTietModalLabel">Chi tiết đơn hàng: {{ selectedOrder.ma_don_hang }}</h5>
+					<h5 class="modal-title text-white" id="chiTietModalLabel">Chi tiết đơn hàng: {{ selectedOrder.ma_don_hang }}</h5>
 					<button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				<div class="modal-body">
 					<div class="row mb-3">
 						<div class="col-12">
-							<div class="alert" :class="selectedOrder.is_thanh_toan ? 'alert-success' : 'alert-warning'">
-								<i :class="selectedOrder.is_thanh_toan ? 'fas fa-check-circle' : 'fas fa-clock'" class="me-2"></i>
-								<strong>{{ selectedOrder.is_thanh_toan ? 'Đã thanh toán' : 'Chờ thanh toán' }}</strong>
+							<div v-if="selectedOrder.is_thanh_toan" class="alert alert-success">
+								<i class="fas fa-check-circle me-2"></i>
+								<strong>Đã thanh toán</strong>
+							</div>
+							<div v-else class="alert alert-warning">
+								<i class="fas fa-clock me-2"></i>
+								<strong>Chờ thanh toán</strong>
 							</div>
 						</div>
 					</div>
-
 					<div class="row">
 						<!-- Thông tin phim -->
 						<div class="col-lg-5 mb-3">
@@ -382,7 +367,7 @@
 												</tr>
 											</thead>
 											<tbody>
-												<tr v-for="(dv, index) in selectedOrder.dich_vu" :key="index">
+												<tr v-for="(dv, index) in selectedOrder.dich_vu" :key="index" class="align-middle">
 													<td>{{ index + 1 }}</td>
 													<td>
 														<div class="d-flex align-items-center">
@@ -419,7 +404,7 @@
 							<!-- Tổng tiền -->
 							<div class="card">
 								<div class="card-header bg-secondary text-white">
-									<h6 class="mb-0"><i class="fas fa-receipt me-2"></i>Tổng Thanh Toán</h6>
+									<h6 class="mb-0 text-white"><i class="fas fa-receipt me-2"></i>Tổng Thanh Toán</h6>
 								</div>
 								<div class="card-body">
 									<table class="table table-borderless mb-0">
@@ -527,9 +512,6 @@ export default {
 				});
 		},
 		loadDonHangs() {
-			if (this.donHangs.length > 0) return;
-			
-			this.loadingOrders = true;
 			axios
 				.get(apiUrl("client/don-hang/danh-sach"), {
 					headers: {
@@ -544,13 +526,13 @@ export default {
 						this.$toast.error(res.data.message);
 					}
 				})
-				.catch((error) => {
-					console.error('Error loading orders:', error);
-					this.$toast.error('Không thể tải danh sách đơn hàng');
-				})
-				.finally(() => {
-					this.loadingOrders = false;
+				.catch((res) => {
+					const list = Object.values(res.response.data.errors);
+					list.forEach((v, i) => {
+						this.$toast.error(v[0]);
+					});
 				});
+				
 		},
 		updateProfile() {
 			axios
@@ -607,7 +589,6 @@ export default {
 			this.selectedOrder = order;
 		},
 		goToPaymentFromModal(maDonHang) {
-			// Đóng modal
 			const modalElement = document.getElementById('chiTietModal');
 			const modal = bootstrap.Modal.getInstance(modalElement);
 			if (modal) {
