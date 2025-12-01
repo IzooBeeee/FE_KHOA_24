@@ -80,8 +80,8 @@ const routes = [
         meta: { layout: "client" },
         beforeEnter: checkClient,
     },
-   
-    
+
+    // ==================== VIEW ====================
     // {
     //     path: "/",
     //     component: () => import("../components/Test/index.vue"),
@@ -208,6 +208,13 @@ const routes = [
         path: "/admin/profile",
         component: () => import("../components/Admin/Profile/index.vue"),
         beforeEnter: checkAdmin,
+    },
+    {
+        path: "/admin/in-ve/:ma_hoa_don",
+        component: () => import("../components/Admin/InVe/index.vue"),
+        beforeEnter: checkAdmin,
+        meta: { layout: "blank" },
+        props: true
     },
 ];
 
