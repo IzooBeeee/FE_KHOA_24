@@ -183,7 +183,7 @@
                                                     </tr>
                                                     <tr>
                                                         <td><strong>Số tài khoản:</strong></td>
-                                                        <td>{{ list_don_hang.thanh_toan?.so_tai_khoan || '1910061030119' }}</td>
+                                                        <td>{{ list_don_hang.thanh_toan?.so_tai_khoan || '0394425076' }}</td>
                                                     </tr>
                                                     <tr>
                                                         <td><strong>Chủ TK:</strong></td>

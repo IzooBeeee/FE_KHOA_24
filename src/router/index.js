@@ -216,6 +216,13 @@ const routes = [
         meta: { layout: "blank" },
         props: true
     },
+    {
+        path: "/admin/in-ve2/:ma_hoa_don",
+        component: () => import("../components/Admin/InVe/InVe.vue"),
+        beforeEnter: checkAdmin,
+        meta: { layout: "blank" },
+        props: true
+    },
 ];
 
 const router = createRouter({

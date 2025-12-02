@@ -28,23 +28,23 @@
                 <!-- Movie Details -->
                 <div class="movie-section">
                     <h3 class="section-title">THÔNG TIN PHIM</h3>
-                    <div class="movie-name">{{ tt_phim.ten_phim }}</div>
+                    <div class="movie-name">Spider-Man: No Way Home</div>
                     <table class="info-table">
                         <tr>
                             <td class="label">Suất chiếu:</td>
-                            <td class="value">{{ tt_phim.thoi_gian_bat_dau }} - {{ tt_phim.thoi_gian_ket_thuc }}</td>
+                            <td class="value">19:30 - 22:00</td>
                         </tr>
                         <tr>
                             <td class="label">Ngày:</td>
-                            <td class="value">{{ tt_phim.ngay_chieu }}</td>
+                            <td class="value">25/12/2024</td>
                         </tr>
                         <tr>
                             <td class="label">Phòng:</td>
-                            <td class="value">{{ tt_phim.ten_phong }}</td>
+                            <td class="value">Phòng 1 - VIP</td>
                         </tr>
                         <tr>
                             <td class="label">Định dạng:</td>
-                            <td class="value">{{ tt_phim.ngon_ngu }}</td>
+                            <td class="value">2D Phụ đề Việt</td>
                         </tr>
                     </table>
                 </div>
@@ -52,26 +52,45 @@
                 <!-- Tickets -->
                 <div class="tickets-section">
                     <h3 class="section-title">CHI TIẾT VÉ</h3>
-                    <div v-for="(value, index) in ds_ve" :key="index" class="ticket-item">
+                    
+                    <!-- Ticket 1 -->
+                    <div class="ticket-item">
                         <div class="ticket-header-row">
-                            <span class="seat-number">Ghế {{ value.ten_ghe }}</span>
-                            <span class="seat-price">{{ formatVND(value.gia_ve) }}</span>
+                            <span class="seat-number">Ghế F08</span>
+                            <span class="seat-price">85.000₫</span>
                         </div>
                         <div class="barcode-section">
-                            <img :src="`https://barcode.tec-it.com/barcode.ashx?data=` + value.ma_ve + `&code=Code128&multiplebarcodes=false&translate-esc=false&unit=Fit&dpi=96&imagetype=Gif&rotation=0&color=%23000000&bgcolor=%23ffffff&qunit=Mm&quiet=0`"
+                            <img src="https://barcode.tec-it.com/barcode.ashx?data=DZ20241225F08001&code=Code128&multiplebarcodes=false&translate-esc=false&unit=Fit&dpi=96&imagetype=Gif&rotation=0&color=%23000000&bgcolor=%23ffffff&qunit=Mm&quiet=0"
                                 alt="Barcode" class="barcode-img">
-                            <p class="barcode-code">{{ value.ma_ve }}</p>
+                            <p class="barcode-code">DZ20241225F08001</p>
+                        </div>
+                    </div>
+
+                    <!-- Ticket 2 -->
+                    <div class="ticket-item">
+                        <div class="ticket-header-row">
+                            <span class="seat-number">Ghế F09</span>
+                            <span class="seat-price">85.000₫</span>
+                        </div>
+                        <div class="barcode-section">
+                            <img src="https://barcode.tec-it.com/barcode.ashx?data=DZ20241225F09002&code=Code128&multiplebarcodes=false&translate-esc=false&unit=Fit&dpi=96&imagetype=Gif&rotation=0&color=%23000000&bgcolor=%23ffffff&qunit=Mm&quiet=0"
+                                alt="Barcode" class="barcode-img">
+                            <p class="barcode-code">DZ20241225F09002</p>
                         </div>
                     </div>
                 </div>
 
                 <!-- Services -->
-                <div class="services-section" v-if="ds_dv.length > 0">
+                <div class="services-section">
                     <h3 class="section-title">DỊCH VỤ</h3>
                     <table class="services-table">
-                        <tr v-for="(value, index) in ds_dv" :key="index">
-                            <td class="service-name">{{ value.ten_dich_vu }}</td>
-                            <td class="service-price">{{ formatVND(value.gia) }}</td>
+                        <tr>
+                            <td class="service-name">Combo 1 - Bắp rang bơ (L) + Pepsi (L)</td>
+                            <td class="service-price">89.000₫</td>
+                        </tr>
+                        <tr>
+                            <td class="service-name">Bắp rang (M)</td>
+                            <td class="service-price">45.000₫</td>
                         </tr>
                     </table>
                 </div>
@@ -108,51 +127,8 @@
 </template>
 
 <script>
-import axios from 'axios'
-import apiUrl from '../../../utils/api';
-
 export default {
-    props: ['ma_hoa_don'],
-    data() {
-        return {
-            ma_hoa_don: this.$route.params.ma_hoa_don,
-            tt_phim: {},
-            ds_ve: [],
-            ds_dv: [],
-            so_luong_ve: 0,
-            tong_tien: 0,
-        }
-    },
-    computed: {
-        so_luong_ve() {
-            return this.ds_ve.length;
-        },
-        tong_tien() {
-            if (this.ds_ve.length === 0) return 0;
-            this.tong_tien = this.ds_ve.reduce((total, ve) => total + ve.gia_ve, 0);
-            return this.tong_tien;
-        }
-    },
-    mounted() {
-        this.getPhim();
-    },
-    methods: {
-        getPhim() {
-            axios.post(apiUrl("admin/don-hang/in-ve"), this.ma_hoa_don, {
-                headers: {
-                    Authorization: "Bearer " + localStorage.getItem("key_admin"),
-                },
-            })
-                .then((res) => {
-                    this.tt_phim = res.data.data;
-                    this.ds_ve = res.data.ds_ve;
-                    this.ds_dv = res.data.ds_dv;
-                })
-        },
-        formatVND(number) {
-            return new Intl.NumberFormat("vi-VI", { style: "currency", currency: "VND" }).format(number,);
-        },
-    },
+    name: 'InVeStatic'
 }
 </script>
 
