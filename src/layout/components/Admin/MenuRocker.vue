@@ -115,6 +115,13 @@
 								</a>
 							</li>
 						</router-link>
+						<router-link to="/admin/quet-ve">
+							<li>	
+								<a class="dropdown-item" href="/admin/quet-ve">
+									<i class="bx bx-right-arrow-alt"></i>Quét Vé
+								</a>
+							</li>
+						</router-link>
 					</ul>
 				</li>
 

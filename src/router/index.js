@@ -217,11 +217,9 @@ const routes = [
         props: true
     },
     {
-        path: "/admin/in-ve2/:ma_hoa_don",
-        component: () => import("../components/Admin/InVe/InVe.vue"),
+        path: "/admin/quet-ve",
+        component: () => import("../components/Admin/QuetVe/index.vue"),
         beforeEnter: checkAdmin,
-        meta: { layout: "blank" },
-        props: true
     },
 ];
 
